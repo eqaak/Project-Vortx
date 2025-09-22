@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FiveM Server</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), 
+                        url('https://images.unsplash.com/photo-1519791883288-dc8bd696e667?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .dashboard {
+            display: flex;
+            max-width: 1200px;
+            width: 100%;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .container {
+            flex: 1;
+            min-width: 400px;
+            background: rgba(10, 10, 10, 0.9);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(0, 100, 200, 0.3);
+            border: 1px solid rgba(100, 150, 255, 0.2);
+            text-align: center;
+        }
+        
+        header {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0, 150, 255, 0.7);
+            letter-spacing: 1.5px;
+        }
+        
+        .buttons-row {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        a.button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 30px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            min-width: 250px;
+            border: 1px solid rgba(100, 150, 255, 0.3);
+        }
+        
+        a.button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(0, 100, 255, 0.4);
+            background: linear-gradient(135deg, #2a5298 0%, #3a6bd1 100%);
+        }
+        
+        a.discord {
+            background: linear-gradient(135deg, #5865F2 0%, #7289da 100%);
+        }
+        
+        a.discord:hover {
+            background: linear-gradient(135deg, #7289da 0%, #8398e8 100%);
+            box-shadow: 0 7px 20px rgba(88, 101, 242, 0.4);
+        }
+
+        .info-box {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border-left: 4px solid #2a5298;
+            text-align: left;
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #aaa;
+            text-align: center;
+            width: 100%;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard {
+                flex-direction: column;
+            }
+
+            header {
+                font-size: 2rem;
+            }
+
+            .buttons-row {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            a.button {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="container">
+            <header>🌐 Vítejte na našem FiveM serveru</header>
+            
+            <div class="buttons-row">
+                <a class="button discord" href="https://discord.gg/hqXuR7bHDX" target="_blank">
+                    <i class="fab fa-discord"></i>
+                    Připoj se k nám na Discordu
+                </a>
+                
+                <a class="button" href="pravidla.html">
+                    <i class="fas fa-book"></i>
+                    PRAVIDLA
+                </a>
+            </div>
+            
+            <div class="info-box">
+                <div class="info-title">O SERVERU</div>
+                <p>Vítejte na našem FiveM RP serveru! Hrajeme každý den od 18:00 do 00:00. Server je optimalizován pro maximální výkon a zábavu.</p>
+            </div>
+            
+            <div class="info-box">
+                <div class="info-title">DALŠÍ ODKAZY</div>
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 15px;">
+                    <a href="#" style="color: #4a8eff; text-decoration: none;"><i class="fas fa-download"></i> Ke stažení</a>
+                    <a href="#" style="color: #4a8eff; text-decoration: none;"><i class="fas fa-images"></i> Galerie</a>
+                    <a href="#" style="color: #4a8eff; text-decoration: none;"><i class="fas fa-question-circle"></i> Nápověda</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        © 2025 Project Vortex | Všechna práva vyhrazena
+    </footer>
+</body>
+</html>
