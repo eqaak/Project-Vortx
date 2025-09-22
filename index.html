@@ -6,11 +6,524 @@
     <title>Project Vortex - Player Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Všechny tvé původní styly zůstávají beze změny */
-        /* ... (pro úsporu místa je zde vynechávám, přidej své původní CSS) ... */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), 
+                        url('https://images.unsplash.com/photo-1519791883288-dc8bd696e667?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .dashboard {
+            display: flex;
+            max-width: 1200px;
+            width: 100%;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .player-panel {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(20, 20, 30, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 0 25px rgba(0, 100, 200, 0.3);
+            border: 1px solid rgba(100, 150, 255, 0.2);
+        }
+        
+        .panel-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(100, 150, 255, 0.3);
+        }
+        
+        .panel-icon {
+            font-size: 2.5rem;
+            margin-right: 15px;
+            color: #4a8eff;
+        }
+        
+        .panel-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        
+        .info-box {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border-left: 4px solid #2a5298;
+        }
+        
+        .info-title {
+            font-size: 1rem;
+            color: #aaa;
+            margin-bottom: 8px;
+        }
+        
+        .info-value {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #4a8eff;
+        }
+        
+        .login-box {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 2px solid rgba(100, 150, 255, 0.3);
+            margin-bottom: 20px;
+        }
+        
+        .login-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 30px;
+            background: linear-gradient(135deg, #5865F2 0%, #7289da 100%);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            min-width: 250px;
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            margin: 10px 0;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .login-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(88, 101, 242, 0.4);
+            background: linear-gradient(135deg, #7289da 0%, #8398e8 100%);
+        }
+        
+        .character-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+            padding-right: 10px;
+        }
+        
+        .character-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .character-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .character-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2a5298;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-weight: bold;
+        }
+        
+        .character-name {
+            flex: 1;
+            font-size: 1rem;
+        }
+        
+        .character-level {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-left: 10px;
+        }
+        
+        .container {
+            flex: 2;
+            min-width: 400px;
+            background: rgba(10, 10, 10, 0.9);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(0, 100, 200, 0.3);
+            border: 1px solid rgba(100, 150, 255, 0.2);
+            text-align: center;
+        }
+        
+        header {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0, 150, 255, 0.7);
+            letter-spacing: 1.5px;
+        }
+        
+        .buttons-row {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        a.button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 30px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            min-width: 250px;
+            border: 1px solid rgba(100, 150, 255, 0.3);
+        }
+        
+        a.button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(0, 100, 255, 0.4);
+            background: linear-gradient(135deg, #2a5298 0%, #3a6bd1 100%);
+        }
+        
+        a.discord {
+            background: linear-gradient(135deg, #5865F2 0%, #7289da 100%);
+        }
+        
+        a.discord:hover {
+            background: linear-gradient(135deg, #7289da 0%, #8398e8 100%);
+            box-shadow: 0 7px 20px rgba(88, 101, 242, 0.4);
+        }
+        
+        .icon {
+            font-size: 1.5rem;
+            filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.5));
+        }
+        
+        .connect-button {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(100, 255, 150, 0.3);
+            margin-top: 10px;
+        }
+        
+        .connect-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(46, 204, 113, 0.4);
+            background: linear-gradient(135deg, #2ecc71 0%, #3dd87d 100%);
+        }
+        
+        footer {
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #aaa;
+            text-align: center;
+            width: 100%;
+        }
+        
+        @media (max-width: 900px) {
+            .dashboard {
+                flex-direction: column;
+            }
+            
+            header {
+                font-size: 2rem;
+            }
+            
+            .buttons-row {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            a.button {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #2a5298;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3a6bd1;
+        }
+        
+        .loading {
+            color: #aaa;
+            font-style: italic;
+        }
+        
+        .error {
+            color: #e74c3c;
+            font-style: italic;
+        }
+        
+        .vortex-logo {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            color: #6c5ce7;
+            text-shadow: 0 0 10px rgba(108, 92, 231, 0.7);
+        }
+        
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .inventory-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .inventory-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .vehicle-list {
+            margin-top: 15px;
+        }
+        
+        .vehicle-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .vehicle-icon {
+            font-size: 1.5rem;
+            margin-right: 12px;
+            color: #4a8eff;
+        }
+        
+        .vehicle-name {
+            flex: 1;
+            font-size: 1rem;
+        }
+        
+        .vehicle-plate {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-left: 10px;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 15px;
+            border: 2px solid #4a8eff;
+        }
+        
+        .user-info {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .user-discriminator {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .logout-btn {
+            background: rgba(231, 76, 60, 0.2);
+            border: none;
+            color: #e74c3c;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(231, 76, 60, 0.3);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: rgba(20, 20, 30, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 0 30px rgba(0, 100, 200, 0.5);
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            text-align: center;
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #4a8eff;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+        
+        .modal-btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-btn.confirm {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .modal-btn.cancel {
+            background: #4a8eff;
+            color: white;
+        }
+        
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            background: rgba(20, 20, 30, 0.95);
+            border-left: 4px solid #4a8eff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 400px;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            border-left-color: #2ecc71;
+        }
+        
+        .notification.error {
+            border-left-color: #e74c3c;
+        }
+        
+        .notification-icon {
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 <body>
+    <div class="notification" id="notification">
+        <div class="notification-icon"><i class="fas fa-info-circle"></i></div>
+        <div class="notification-message" id="notification-message">Zpráva</div>
+    </div>
+
+    <div class="modal" id="logout-modal">
+        <div class="modal-content">
+            <div class="modal-title">Odhlášení</div>
+            <p>Opravdu se chceš odhlásit?</p>
+            <div class="modal-buttons">
+                <button class="modal-btn confirm" id="confirm-logout">Ano, odhlásit</button>
+                <button class="modal-btn cancel" id="cancel-logout">Zrušit</button>
+            </div>
+        </div>
+    </div>
+
     <div class="dashboard">
         <div class="player-panel">
             <div class="panel-header">
@@ -26,12 +539,11 @@
                     Přihlásit se přes Discord
                 </button>
                 <div style="margin-top: 15px; font-size: 0.9rem; color: #4a8eff;">
-                    <p><strong>Redirect URI:</strong> https://resilient-torte-29a707.netlify.app/callback</p>
+                    <p><strong>Redirect URI:</strong> https://resilient-torte-29a707.netlify.app</p>
                 </div>
             </div>
             
             <div id="user-profile" style="display: none;">
-                <!-- Profil uživatele a seznam postav, vozidel a inventáře -->
                 <div class="user-profile">
                     <img src="" class="user-avatar" id="user-avatar" alt="User Avatar">
                     <div class="user-info">
@@ -42,21 +554,21 @@
                         <i class="fas fa-sign-out-alt"></i>
                     </button>
                 </div>
-                <!-- Postavy -->
+                
                 <div class="info-box">
                     <div class="info-title">TVÉ POSTAVY</div>
                     <div class="character-list" id="character-list">
                         <div class="loading">Načítám postavy...</div>
                     </div>
                 </div>
-                <!-- Vozidla -->
+                
                 <div class="info-box">
                     <div class="info-title">VLASTNĚNÁ VOZIDLA</div>
                     <div class="vehicle-list" id="vehicle-list">
                         <div class="loading">Načítám vozidla...</div>
                     </div>
                 </div>
-                <!-- Inventář -->
+                
                 <div class="info-box">
                     <div class="info-title">INVENTÁŘ</div>
                     <div class="inventory-grid" id="inventory-grid">
@@ -67,103 +579,296 @@
         </div>
         
         <div class="container">
-            <div class="vortex-logo"><i class="fas fa-wind"></i> PROJECT VORTEX</div>
+            <div class="vortex-logo">
+                <i class="fas fa-wind"></i> PROJECT VORTEX
+            </div>
+            
             <header>Project Vortex</header>
             <p style="text-align: center; color: #aaa; margin-top: 5px; font-size: 1.1rem;">
                 Czech FiveM Roleplay Server
             </p>
+            
             <div class="buttons-row">
                 <a class="button discord" href="https://discord.gg/hqXuR7bHDX" target="_blank">
-                    <i class="fab fa-discord"></i> Připoj se k nám na Discordu
+                    <i class="fab fa-discord"></i>
+                    Připoj se k nám na Discordu
                 </a>
+                
                 <a class="button" href="pravidla.html">
-                    <i class="fas fa-book"></i> PRAVIDLA
+                    <i class="fas fa-book"></i>
+                    PRAVIDLA
                 </a>
+
                 <a href="#" class="button" id="show-profile">
-                    <i class="fas fa-user"></i> TVÉ ÚDAJE
+                    <i class="fas fa-user"></i>
+                    TVÉ ÚDAJE
                 </a>
+                
                 <a href="fivem://connect/cfx.re/join/ellb5b" class="connect-button">
                     <i class="fas fa-play"></i> Připojit se k serveru
                 </a>
             </div>
+            
+            <div class="info-box">
+                <div class="info-title">O SERVERU</div>
+                <p>Vítejte na Project Vortex - českém FiveM RP serveru! Hrajeme každý den od 18:00 do 00:00. Server je optimalizován pro maximální výkon a zábavu.</p>
+                <p>Moderní RP prostředí s jedinečným příběhem a pravidly.</p>
+            </div>
+            
+            <div class="info-box">
+                <div class="info-title">DALŠÍ ODKAZY</div>
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 15px;">
+                    <a href="#" style="color: #4a8eff; text-decoration: none;"><i class="fas fa-download"></i> Ke stažení</a>
+                    <a href="#" style="color: #4a8eff; text-decoration: none;"><i class="fas fa-question-circle"></i> Nápověda</a>
+                    <a href="#" style="color: #4a8eff; text-decoration: none;"><i class="fas fa-envelope"></i> Kontakt</a>
+                </div>
+            </div>
         </div>
     </div>
-
+    
     <footer>
         &copy; 2023 Project Vortex. Všechna práva vyhrazena.
     </footer>
 
     <script>
-        // KONFIGURACE
+        // OPRAVENÁ KONFIGURACE - podle tvého OAuth2 URL
         const DISCORD_CLIENT_ID = "1419670780836319312";
-        const DISCORD_REDIRECT_URI = "https://resilient-torte-29a707.netlify.app/callback";
-        const DISCORD_SCOPE = "identify";
-
+        const DISCORD_REDIRECT_URI = "https://resilient-torte-29a707.netlify.app";
+        const DISCORD_SCOPE = "identify email guilds";
+        
+        // DOM elementy
         const loginSection = document.getElementById('login-section');
         const userProfile = document.getElementById('user-profile');
         const discordLoginBtn = document.getElementById('discord-login');
         const logoutBtn = document.getElementById('logout-btn');
-
-        function showNotification(message) { alert(message); } // jednoduchá notifikace
-
-        // Funkce pro přihlášení
-        function loginWithDiscord() {
-            const url = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(DISCORD_REDIRECT_URI)}&response_type=code&scope=${DISCORD_SCOPE}`;
-            window.location.href = url;
+        const confirmLogoutBtn = document.getElementById('confirm-logout');
+        const cancelLogoutBtn = document.getElementById('cancel-logout');
+        const logoutModal = document.getElementById('logout-modal');
+        const notification = document.getElementById('notification');
+        const notificationMessage = document.getElementById('notification-message');
+        
+        // Funkce pro zobrazení notifikace
+        function showNotification(message, type = 'info') {
+            notificationMessage.textContent = message;
+            notification.className = 'notification';
+            notification.classList.add(type);
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
         }
-
-        discordLoginBtn.addEventListener('click', loginWithDiscord);
-
-        // Funkce pro odhlášení
-        logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('discordUserData');
-            loginSection.style.display = 'block';
-            userProfile.style.display = 'none';
-            showNotification('Odhlášeno');
-        });
-
-        // Funkce pro zpracování OAuth callbacku
-        function handleOAuthCallback() {
-            const params = new URLSearchParams(window.location.search);
-            const code = params.get('code');
-            if (code) {
-                // V reálném nasazení tady zavoláš backend, který vymění code za access_token a vrátí user info
-                // Zde simulace
-                const mockUser = {
-                    id: "123456789012345678",
-                    username: "ProjectVortexUser",
-                    discriminator: "1234",
-                    avatar: "a_abc123def456"
-                };
-                localStorage.setItem('discordUserData', JSON.stringify(mockUser));
-                displayUserProfile(mockUser);
-                // Odstranění code z URL
-                window.history.replaceState({}, document.title, "/");
+        
+        // Funkce pro kontrolu, zda je uživatel přihlášen
+        function checkLoginStatus() {
+            const userData = localStorage.getItem('discordUserData');
+            if (userData) {
+                try {
+                    const user = JSON.parse(userData);
+                    displayUserProfile(user);
+                    loadUserData(user.id);
+                    showNotification(`Vítej zpět, ${user.username}!`, 'success');
+                } catch (e) {
+                    localStorage.removeItem('discordUserData');
+                    showNotification('Chyba při načítání uživatelských dat', 'error');
+                }
             }
         }
-
+        
+        // Funkce pro zobrazení uživatelského profilu
         function displayUserProfile(user) {
             loginSection.style.display = 'none';
             userProfile.style.display = 'block';
+            
             document.getElementById('user-name').textContent = user.username;
-            document.getElementById('user-discriminator').textContent = "#" + user.discriminator;
-            document.getElementById('user-avatar').src = user.avatar
-                ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`
-                : `https://cdn.discordapp.com/embed/avatars/${parseInt(user.discriminator) % 5}.png`;
-        }
-
-        // Kontrola při načtení
-        document.addEventListener('DOMContentLoaded', () => {
-            const storedUser = localStorage.getItem('discordUserData');
-            if (storedUser) {
-                displayUserProfile(JSON.parse(storedUser));
+            document.getElementById('user-discriminator').textContent = '#' + user.discriminator;
+            
+            // Avatar uživatele
+            if (user.avatar) {
+                document.getElementById('user-avatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
+            } else {
+                // Výchozí avatar pokud uživatel nemá nastavený
+                const defaultAvatarNumber = parseInt(user.discriminator) % 5;
+                document.getElementById('user-avatar').src = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarNumber}.png`;
             }
+        }
+        
+        // Funkce pro načtení dat z FiveM serveru (simulace)
+        function loadUserData(discordId) {
+            // Simulace načítání dat z FiveM serveru
+            setTimeout(() => {
+                // Simulované postavy
+                const characters = [
+                    { name: "John Doe", level: 15 },
+                    { name: "Michael Smith", level: 8 },
+                    { name: "Carl Johnson", level: 22 }
+                ];
+                
+                // Simulovaná vozidla
+                const vehicles = [
+                    { name: "Sultan RS", plate: "VORTEX1" },
+                    { name: "Elegy RH8", plate: "VORTEX2" },
+                    { name: "Adder", plate: "VORTEX3" }
+                ];
+                
+                // Simulovaný inventář
+                const inventory = [
+                    "Peníze: $15,000",
+                    "Zbraně: Pistole, Brokovnice",
+                    "Telefon",
+                    "Klíče od auta",
+                    "Lékařský kit"
+                ];
+                
+                // Zobrazení postav
+                const characterList = document.getElementById('character-list');
+                characterList.innerHTML = '';
+                characters.forEach(char => {
+                    const charElement = document.createElement('div');
+                    charElement.className = 'character-item';
+                    charElement.innerHTML = `
+                        <div class="character-avatar">${char.name.charAt(0)}</div>
+                        <div class="character-name">${char.name}</div>
+                        <div class="character-level">Level ${char.level}</div>
+                    `;
+                    characterList.appendChild(charElement);
+                });
+                
+                // Zobrazení vozidel
+                const vehicleList = document.getElementById('vehicle-list');
+                vehicleList.innerHTML = '';
+                vehicles.forEach(vehicle => {
+                    const vehicleElement = document.createElement('div');
+                    vehicleElement.className = 'vehicle-item';
+                    vehicleElement.innerHTML = `
+                        <div class="vehicle-icon"><i class="fas fa-car"></i></div>
+                        <div class="vehicle-name">${vehicle.name}</div>
+                        <div class="vehicle-plate">${vehicle.plate}</div>
+                    `;
+                    vehicleList.appendChild(vehicleElement);
+                });
+                
+                // Zobrazení inventáře
+                const inventoryGrid = document.getElementById('inventory-grid');
+                inventoryGrid.innerHTML = '';
+                inventory.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'inventory-item';
+                    itemElement.textContent = item;
+                    inventoryGrid.appendChild(itemElement);
+                });
+            }, 1500);
+        }
+        
+        // OPRAVENÁ Funkce pro přihlášení přes Discord
+        function loginWithDiscord() {
+            // Použijeme přímo tvé OAuth2 URL
+            const discordOAuthURL = `https://discord.com/oauth2/authorize?client_id=1419670780836319312&response_type=code&redirect_uri=https%3A%2F%2Fresilient-torte-29a707.netlify.app&scope=identify+email+guilds`;
+            
+            console.log('OAuth2 URL:', discordOAuthURL);
+            showNotification('Přesměrování na Discord...', 'info');
+            
+            // Přesměrování na Discord OAuth2
+            window.location.href = discordOAuthURL;
+        }
+        
+        // Funkce pro odhlášení
+        function logout() {
+            localStorage.removeItem('discordUserData');
+            loginSection.style.display = 'block';
+            userProfile.style.display = 'none';
+            logoutModal.style.display = 'none';
+            showNotification('Byl jsi úspěšně odhlášen', 'success');
+        }
+        
+        // Funkce pro zpracování OAuth2 callbacku
+        function handleOAuthCallback() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const error = urlParams.get('error');
+            const errorDescription = urlParams.get('error_description');
+            
+            if (error) {
+                showNotification(`Chyba při přihlášení: ${errorDescription || error}`, 'error');
+                console.error('OAuth2 Error:', error, errorDescription);
+                
+                // Odstranění parametrů z URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+                return;
+            }
+            
+            if (code) {
+                showNotification('Připojování k Discordu...', 'info');
+                console.log('OAuth2 Code received:', code);
+                
+                // SIMULACE - v reálném případě byste odeslali kód na váš backend
+                setTimeout(() => {
+                    // Simulovaná odpověď od Discordu
+                    const mockUserData = {
+                        id: "123456789012345678",
+                        username: "ProjectVortexUser",
+                        discriminator: "1234",
+                        avatar: "a_abc123def456"
+                    };
+                    
+                    // Uložení uživatelských dat do localStorage
+                    localStorage.setItem('discordUserData', JSON.stringify(mockUserData));
+                    
+                    // Odstranění parametrů z URL
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    
+                    // Zobrazení uživatelského profilu
+                    displayUserProfile(mockUserData);
+                    loadUserData(mockUserData.id);
+                    
+                    showNotification(`Úspěšně přihlášen jako ${mockUserData.username}`, 'success');
+                }, 2000);
+            }
+        }
+        
+        // Event listeners
+        discordLoginBtn.addEventListener('click', loginWithDiscord);
+        
+        logoutBtn.addEventListener('click', () => {
+            logoutModal.style.display = 'flex';
+        });
+        
+        confirmLogoutBtn.addEventListener('click', logout);
+        
+        cancelLogoutBtn.addEventListener('click', () => {
+            logoutModal.style.display = 'none';
+        });
+        
+        // Tlačítko "Tvé údaje"
+        document.getElementById('show-profile').addEventListener('click', (e) => {
+            e.preventDefault();
+            const userData = localStorage.getItem('discordUserData');
+            
+            if (userData) {
+                document.querySelector('.player-panel').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                showNotification('Pro zobrazení údajů se nejdříve přihlas', 'info');
+                document.querySelector('.player-panel').scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+        
+        // Kliknutí mimo modal zavře modal
+        window.addEventListener('click', (e) => {
+            if (e.target === logoutModal) {
+                logoutModal.style.display = 'none';
+            }
+        });
+        
+        // Inicializace
+        document.addEventListener('DOMContentLoaded', () => {
+            checkLoginStatus();
             handleOAuthCallback();
+            
+            console.log('Discord OAuth2 Configuration:');
+            console.log('- Client ID:', DISCORD_CLIENT_ID);
+            console.log('- Redirect URI:', DISCORD_REDIRECT_URI);
+            console.log('- Scope:', DISCORD_SCOPE);
         });
     </script>
 </body>
-</html>
-
-</body>
-
 </html>
