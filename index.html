@@ -111,6 +111,7 @@
             border: 1px solid rgba(100, 150, 255, 0.3);
             margin: 10px 0;
             cursor: pointer;
+            border: none;
         }
         
         .login-button:hover {
@@ -471,9 +472,49 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            background: rgba(20, 20, 30, 0.95);
+            border-left: 4px solid #4a8eff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 400px;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            border-left-color: #2ecc71;
+        }
+        
+        .notification.error {
+            border-left-color: #e74c3c;
+        }
+        
+        .notification-icon {
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 <body>
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div class="notification-icon"><i class="fas fa-info-circle"></i></div>
+        <div class="notification-message" id="notification-message">Zpráva</div>
+    </div>
+
     <!-- Modal pro odhlášení -->
     <div class="modal" id="logout-modal">
         <div class="modal-content">
@@ -590,10 +631,10 @@
     </footer>
 
     <script>
-        // Konfigurace Discord OAuth2
-        const DISCORD_CLIENT_ID = "YOUR_DISCORD_CLIENT_ID"; // Nahraďte skutečným Client ID
-        const DISCORD_REDIRECT_URI = "YOUR_REDIRECT_URI"; // Nahraďte vaší redirect URI
-        const DISCORD_SCOPE = "identify"; // Požadovaná oprávnění
+        // Konfigurace Discord OAuth2 - POUŽIJTE VAŠE SKUTEČNÉ ÚDAJE
+        const DISCORD_CLIENT_ID = "1419670780836319312";
+        const DISCORD_REDIRECT_URI = window.location.origin + window.location.pathname; // Aktuální URL jako redirect
+        const DISCORD_SCOPE = "identify";
         
         // DOM elementy
         const loginSection = document.getElementById('login-section');
@@ -603,14 +644,34 @@
         const confirmLogoutBtn = document.getElementById('confirm-logout');
         const cancelLogoutBtn = document.getElementById('cancel-logout');
         const logoutModal = document.getElementById('logout-modal');
+        const notification = document.getElementById('notification');
+        const notificationMessage = document.getElementById('notification-message');
+        
+        // Funkce pro zobrazení notifikace
+        function showNotification(message, type = 'info') {
+            notificationMessage.textContent = message;
+            notification.className = 'notification';
+            notification.classList.add(type);
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
         
         // Funkce pro kontrolu, zda je uživatel přihlášen
         function checkLoginStatus() {
             const userData = localStorage.getItem('discordUserData');
             if (userData) {
-                const user = JSON.parse(userData);
-                displayUserProfile(user);
-                loadUserData(user.id); // Načte data z FiveM serveru
+                try {
+                    const user = JSON.parse(userData);
+                    displayUserProfile(user);
+                    loadUserData(user.id);
+                    showNotification(`Vítej zpět, ${user.username}!`, 'success');
+                } catch (e) {
+                    localStorage.removeItem('discordUserData');
+                    showNotification('Chyba při načítání uživatelských dat', 'error');
+                }
             }
         }
         
@@ -621,7 +682,15 @@
             
             document.getElementById('user-name').textContent = user.username;
             document.getElementById('user-discriminator').textContent = '#' + user.discriminator;
-            document.getElementById('user-avatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
+            
+            // Avatar uživatele
+            if (user.avatar) {
+                document.getElementById('user-avatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
+            } else {
+                // Výchozí avatar pokud uživatel nemá nastavený
+                const defaultAvatarNumber = parseInt(user.discriminator) % 5;
+                document.getElementById('user-avatar').src = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarNumber}.png`;
+            }
         }
         
         // Funkce pro načtení dat z FiveM serveru (simulace)
@@ -688,7 +757,7 @@
                     itemElement.textContent = item;
                     inventoryGrid.appendChild(itemElement);
                 });
-            }, 1000);
+            }, 1500);
         }
         
         // Funkce pro přihlášení přes Discord
@@ -706,35 +775,49 @@
             loginSection.style.display = 'block';
             userProfile.style.display = 'none';
             logoutModal.style.display = 'none';
+            showNotification('Byl jsi úspěšně odhlášen', 'success');
         }
         
-        // Funkce pro zpracování OAuth2 callbacku (simulace)
+        // Funkce pro zpracování OAuth2 callbacku (simulace - v reálném případě by to bylo na backendu)
         function handleOAuthCallback() {
-            // Zkontrolujeme, zda jsme v callback URL s kódem
             const urlParams = new URLSearchParams(window.location.search);
             const code = urlParams.get('code');
+            const error = urlParams.get('error');
             
-            if (code) {
-                // Simulace výměny kódu za access token a získání uživatelských dat
-                // V reálném případě byste odeslali kód na váš backend
-                
-                // Simulovaná odpověď od Discordu
-                const mockUserData = {
-                    id: "123456789012345678",
-                    username: "ExampleUser",
-                    discriminator: "1234",
-                    avatar: "a_abc123def456"
-                };
-                
-                // Uložení uživatelských dat do localStorage
-                localStorage.setItem('discordUserData', JSON.stringify(mockUserData));
-                
+            if (error) {
+                showNotification(`Chyba při přihlášení: ${error}`, 'error');
                 // Odstranění parametrů z URL
                 window.history.replaceState({}, document.title, window.location.pathname);
+                return;
+            }
+            
+            if (code) {
+                showNotification('Připojování k Discordu...', 'info');
                 
-                // Zobrazení uživatelského profilu
-                displayUserProfile(mockUserData);
-                loadUserData(mockUserData.id);
+                // SIMULACE - v reálném případě byste odeslali kód na váš backend
+                // Toto je pouze ukázka jak by to mohlo fungovat
+                
+                setTimeout(() => {
+                    // Simulovaná odpověď od Discordu (v reálu by přišla z vašeho backendu)
+                    const mockUserData = {
+                        id: "123456789012345678",
+                        username: "ProjectVortexUser",
+                        discriminator: "1234",
+                        avatar: "a_abc123def456"
+                    };
+                    
+                    // Uložení uživatelských dat do localStorage
+                    localStorage.setItem('discordUserData', JSON.stringify(mockUserData));
+                    
+                    // Odstranění parametrů z URL
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    
+                    // Zobrazení uživatelského profilu
+                    displayUserProfile(mockUserData);
+                    loadUserData(mockUserData.id);
+                    
+                    showNotification(`Úspěšně přihlášen jako ${mockUserData.username}`, 'success');
+                }, 2000);
             }
         }
         
@@ -751,10 +834,39 @@
             logoutModal.style.display = 'none';
         });
         
+        // Tlačítko "Tvé údaje"
+        document.getElementById('show-profile').addEventListener('click', (e) => {
+            e.preventDefault();
+            const userData = localStorage.getItem('discordUserData');
+            
+            if (userData) {
+                // Pokud je uživatel přihlášen, scroll k profilu
+                document.querySelector('.player-panel').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                // Pokud není přihlášen, zobrazí se přihlášení
+                showNotification('Pro zobrazení údajů se nejdříve přihlas', 'info');
+                document.querySelector('.player-panel').scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+        
+        // Kliknutí mimo modal zavře modal
+        window.addEventListener('click', (e) => {
+            if (e.target === logoutModal) {
+                logoutModal.style.display = 'none';
+            }
+        });
+        
         // Inicializace
         document.addEventListener('DOMContentLoaded', () => {
             checkLoginStatus();
-            handleOAuthCallback(); // Zpracování callbacku po přihlášení
+            handleOAuthCallback();
+            
+            // Informace o nastavení Discord aplikace
+            console.log('Discord OAuth2 nastavení:');
+            console.log('- Client ID:', DISCORD_CLIENT_ID);
+            console.log('- Redirect URI:', DISCORD_REDIRECT_URI);
+            console.log('- Scope:', DISCORD_SCOPE);
+            console.log('Ujistěte se, že máte v Discord Developer Portal nastavenou správnou Redirect URI!');
         });
     </script>
 </body>
