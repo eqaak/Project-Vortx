@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Vortex - Player Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/¨6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -505,6 +505,30 @@
         .notification-icon {
             font-size: 1.2rem;
         }
+
+        .support-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #6c5ce7 0%, #8e7eff 100%);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(140, 120, 255, 0.3);
+            margin-top: 15px;
+        }
+        
+        .support-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(108, 92, 231, 0.4);
+            background: linear-gradient(135deg, #8e7eff 0%, #a294ff 100%);
+        }
     </style>
 </head>
 <body>
@@ -538,7 +562,8 @@
                     <i class="fab fa-discord"></i>
                     Přihlásit se přes Discord
                 </button>
-                <div style="margin-top: 13px; font-size: 0.9rem; color: #4a8eff;">
+                <div style="margin-top: 15px; font-size: 0.9rem; color: #4a8eff;">
+                    <p><strong>Redirect URI:</strong> https://resilient-torte-29a707.netlify.app</p>
                 </div>
             </div>
             
@@ -614,14 +639,11 @@
                 <p>Moderní RP prostředí s jedinečným příběhem a pravidly.</p>
             </div>
             
-            <div class="info-box">
-                <div class="info-title">DALŠÍ ODKAZY</div>
-                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 15px;">
-                    <a href="#" style="color: #4a8eff; text-decoration: none;"><i class="fas fa-download"></i> Ke stažení</a>
-                    <a href="#" style="color: #4a8eff; text-decoration: none;"><i class="fas fa-question-circle"></i> Nápověda</a>
-                    <a href="#" style="color: #4a8eff; https://discordapp.com/channels/1368487722552918026/1376155524617207870: none;"><i class="fas fa-envelope"></i> PODPORA</a>
-                </div>
-            </div>
+            <!-- ODKAZ NA PODPORU -->
+            <a href="https://discordapp.com/channels/1368487722552918026/1376155524617207870" class="support-link" target="_blank">
+                <i class="fas fa-headset"></i>
+                PODPORA
+            </a>
         </div>
     </div>
     
@@ -871,8 +893,6 @@
     </script>
 </body>
 </html>
-
-
 
 
 
