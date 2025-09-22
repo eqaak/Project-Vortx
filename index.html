@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FiveM Server</title>
+    <title>Project Vortex - Player Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -34,8 +34,137 @@
             flex-wrap: wrap;
         }
         
-        .container {
+        .player-panel {
             flex: 1;
+            min-width: 300px;
+            background: rgba(20, 20, 30, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 0 25px rgba(0, 100, 200, 0.3);
+            border: 1px solid rgba(100, 150, 255, 0.2);
+        }
+        
+        .panel-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(100, 150, 255, 0.3);
+        }
+        
+        .panel-icon {
+            font-size: 2.5rem;
+            margin-right: 15px;
+            color: #4a8eff;
+        }
+        
+        .panel-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        
+        .info-box {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border-left: 4px solid #2a5298;
+        }
+        
+        .info-title {
+            font-size: 1rem;
+            color: #aaa;
+            margin-bottom: 8px;
+        }
+        
+        .info-value {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #4a8eff;
+        }
+        
+        .login-box {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 2px solid rgba(100, 150, 255, 0.3);
+            margin-bottom: 20px;
+        }
+        
+        .login-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 30px;
+            background: linear-gradient(135deg, #5865F2 0%, #7289da 100%);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            min-width: 250px;
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            margin: 10px 0;
+        }
+        
+        .login-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(88, 101, 242, 0.4);
+            background: linear-gradient(135deg, #7289da 0%, #8398e8 100%);
+        }
+        
+        .character-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+            padding-right: 10px;
+        }
+        
+        .character-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .character-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .character-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2a5298;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-weight: bold;
+        }
+        
+        .character-name {
+            flex: 1;
+            font-size: 1rem;
+        }
+        
+        .character-level {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-left: 10px;
+        }
+        
+        .container {
+            flex: 2;
             min-width: 400px;
             background: rgba(10, 10, 10, 0.9);
             border-radius: 15px;
@@ -48,7 +177,7 @@
         header {
             font-size: 2.5rem;
             font-weight: 700;
-            margin-bottom: 40px;
+            margin-bottom: 10px;
             color: #ffffff;
             text-shadow: 0 0 10px rgba(0, 150, 255, 0.7);
             letter-spacing: 1.5px;
@@ -94,16 +223,33 @@
             background: linear-gradient(135deg, #7289da 0%, #8398e8 100%);
             box-shadow: 0 7px 20px rgba(88, 101, 242, 0.4);
         }
-
-        .info-box {
-            margin-bottom: 20px;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            border-left: 4px solid #2a5298;
-            text-align: left;
+        
+        .icon {
+            font-size: 1.5rem;
+            filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.5));
         }
-
+        
+        .connect-button {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(100, 255, 150, 0.3);
+            margin-top: 10px;
+        }
+        
+        .connect-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(46, 204, 113, 0.4);
+            background: linear-gradient(135deg, #2ecc71 0%, #3dd87d 100%);
+        }
+        
         footer {
             margin-top: 40px;
             font-size: 0.9rem;
@@ -111,32 +257,220 @@
             text-align: center;
             width: 100%;
         }
-
+        
         @media (max-width: 900px) {
             .dashboard {
                 flex-direction: column;
             }
-
+            
             header {
                 font-size: 2rem;
             }
-
+            
             .buttons-row {
                 flex-direction: column;
                 align-items: center;
             }
-
+            
             a.button {
                 width: 100%;
                 max-width: 300px;
             }
         }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #2a5298;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3a6bd1;
+        }
+        
+        .loading {
+            color: #aaa;
+            font-style: italic;
+        }
+        
+        .error {
+            color: #e74c3c;
+            font-style: italic;
+        }
+        
+        .vortex-logo {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            color: #6c5ce7;
+            text-shadow: 0 0 10px rgba(108, 92, 231, 0.7);
+        }
+        
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .inventory-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .inventory-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .vehicle-list {
+            margin-top: 15px;
+        }
+        
+        .vehicle-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .vehicle-icon {
+            font-size: 1.5rem;
+            margin-right: 12px;
+            color: #4a8eff;
+        }
+        
+        .vehicle-name {
+            flex: 1;
+            font-size: 1rem;
+        }
+        
+        .vehicle-plate {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-left: 10px;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 15px;
+            border: 2px solid #4a8eff;
+        }
+        
+        .user-info {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .user-discriminator {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .logout-btn {
+            background: rgba(231, 76, 60, 0.2);
+            border: none;
+            color: #e74c3c;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(231, 76, 60, 0.3);
+        }
     </style>
 </head>
 <body>
     <div class="dashboard">
+        <div class="player-panel">
+            <div class="panel-header">
+                <div class="panel-icon"><i class="fas fa-user"></i></div>
+                <div class="panel-title">Player Dashboard</div>
+            </div>
+            
+            <div class="login-box" id="login-section">
+                <div class="info-title">PŘIHLÁŠENÍ</div>
+                <p>Pro zobrazení svých postav a vozidel se musíš přihlásit přes Discord</p>
+                <a href="#" class="login-button" id="discord-login">
+                    <i class="fab fa-discord"></i>
+                    Přihlásit se přes Discord
+                </a>
+            </div>
+            
+            <div id="user-profile" style="display: none;">
+                <div class="user-profile">
+                    <img src="" class="user-avatar" id="user-avatar" alt="User Avatar">
+                    <div class="user-info">
+                        <div class="user-name" id="user-name">Username</div>
+                        <div class="user-discriminator" id="user-discriminator">#0000</div>
+                    </div>
+                    <button class="logout-btn" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+                
+                <div class="info-box">
+                    <div class="info-title">TVÉ POSTAVY</div>
+                    <div class="character-list" id="character-list">
+                        <div class="loading">Načítám postavy...</div>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <div class="info-title">VLASTNĚNÁ VOZIDLA</div>
+                    <div class="vehicle-list" id="vehicle-list">
+                        <div class="loading">Načítám vozidla...</div>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <div class="info-title">INVENTÁŘ</div>
+                    <div class="inventory-grid" id="inventory-grid">
+                        <div class="loading">Načítám inventář...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <div class="container">
-            <header>🌐 Vítejte na našem FiveM serveru</header>
+            <div class="vortex-logo">
+                <i class="fas fa-wind"></i> PROJECT VORTEX
+            </div>
+            
+            <header>Project Vortex</header>
+            <p style="text-align: center; color: #aaa; margin-top: 5px; font-size: 1.1rem;">
+                Czech FiveM Roleplay Server
+            </p>
             
             <div class="buttons-row">
                 <a class="button discord" href="https://discord.gg/hqXuR7bHDX" target="_blank">
@@ -148,26 +482,25 @@
                     <i class="fas fa-book"></i>
                     PRAVIDLA
                 </a>
+
+                <a href="#" class="button" id="show-profile">
+                    <i class="fas fa-user"></i>
+                    TVÉ ÚDAJE
+                </a>
+                
+                <a href="fivem://connect/cfx.re/join/ellb5b" class="connect-button">
+                    <i class="fas fa-play"></i> Připojit se k serveru
+                </a>
             </div>
             
             <div class="info-box">
                 <div class="info-title">O SERVERU</div>
-                <p>Vítejte na našem FiveM RP serveru! Hrajeme každý den od 18:00 do 00:00. Server je optimalizován pro maximální výkon a zábavu.</p>
+                <p>Vítejte na Project Vortex - českém FiveM RP serveru! Hrajeme každý den od 18:00 do 00:00. Server je optimalizován pro maximální výkon a zábavu.</p>
+                <p>Moderní RP prostředí s jedinečným příběhem a pravidly.</p>
             </div>
             
             <div class="info-box">
                 <div class="info-title">DALŠÍ ODKAZY</div>
                 <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 15px;">
                     <a href="#" style="color: #4a8eff; text-decoration: none;"><i class="fas fa-download"></i> Ke stažení</a>
-                    <a href="#" style="color: #4a8eff; text-decoration: none;"><i class="fas fa-images"></i> Galerie</a>
-                    <a href="#" style="color: #4a8eff; text-decoration: none;"><i class="fas fa-question-circle"></i> Nápověda</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        © 2025 Project Vortex | Všechna práva vyhrazena
-    </footer>
-</body>
-</html>
+                    <a href="#" style="color: #4a8eff; text
