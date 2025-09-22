@@ -110,6 +110,7 @@
             min-width: 250px;
             border: 1px solid rgba(100, 150, 255, 0.3);
             margin: 10px 0;
+            cursor: pointer;
         }
         
         .login-button:hover {
@@ -408,9 +409,83 @@
         .logout-btn:hover {
             background: rgba(231, 76, 60, 0.3);
         }
+        
+        /* Nové styly pro modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: rgba(20, 20, 30, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 0 30px rgba(0, 100, 200, 0.5);
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            text-align: center;
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #4a8eff;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+        
+        .modal-btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-btn.confirm {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .modal-btn.cancel {
+            background: #4a8eff;
+            color: white;
+        }
+        
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
     </style>
 </head>
 <body>
+    <!-- Modal pro odhlášení -->
+    <div class="modal" id="logout-modal">
+        <div class="modal-content">
+            <div class="modal-title">Odhlášení</div>
+            <p>Opravdu se chceš odhlásit?</p>
+            <div class="modal-buttons">
+                <button class="modal-btn confirm" id="confirm-logout">Ano, odhlásit</button>
+                <button class="modal-btn cancel" id="cancel-logout">Zrušit</button>
+            </div>
+        </div>
+    </div>
+
     <div class="dashboard">
         <div class="player-panel">
             <div class="panel-header">
@@ -421,10 +496,10 @@
             <div class="login-box" id="login-section">
                 <div class="info-title">PŘIHLÁŠENÍ</div>
                 <p>Pro zobrazení svých postav a vozidel se musíš přihlásit přes Discord</p>
-                <a href="#" class="login-button" id="discord-login">
+                <button class="login-button" id="discord-login">
                     <i class="fab fa-discord"></i>
                     Přihlásit se přes Discord
-                </a>
+                </button>
             </div>
             
             <div id="user-profile" style="display: none;">
@@ -503,4 +578,184 @@
                 <div class="info-title">DALŠÍ ODKAZY</div>
                 <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 15px;">
                     <a href="#" style="color: #4a8eff; text-decoration: none;"><i class="fas fa-download"></i> Ke stažení</a>
-                    <a href="#" style="color: #4a8eff; text
+                    <a href="#" style="color: #4a8eff; text-decoration: none;"><i class="fas fa-question-circle"></i> Nápověda</a>
+                    <a href="#" style="color: #4a8eff; text-decoration: none;"><i class="fas fa-envelope"></i> Kontakt</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        &copy; 2023 Project Vortex. Všechna práva vyhrazena.
+    </footer>
+
+    <script>
+        // Konfigurace Discord OAuth2
+        const DISCORD_CLIENT_ID = "YOUR_DISCORD_CLIENT_ID"; // Nahraďte skutečným Client ID
+        const DISCORD_REDIRECT_URI = "YOUR_REDIRECT_URI"; // Nahraďte vaší redirect URI
+        const DISCORD_SCOPE = "identify"; // Požadovaná oprávnění
+        
+        // DOM elementy
+        const loginSection = document.getElementById('login-section');
+        const userProfile = document.getElementById('user-profile');
+        const discordLoginBtn = document.getElementById('discord-login');
+        const logoutBtn = document.getElementById('logout-btn');
+        const confirmLogoutBtn = document.getElementById('confirm-logout');
+        const cancelLogoutBtn = document.getElementById('cancel-logout');
+        const logoutModal = document.getElementById('logout-modal');
+        
+        // Funkce pro kontrolu, zda je uživatel přihlášen
+        function checkLoginStatus() {
+            const userData = localStorage.getItem('discordUserData');
+            if (userData) {
+                const user = JSON.parse(userData);
+                displayUserProfile(user);
+                loadUserData(user.id); // Načte data z FiveM serveru
+            }
+        }
+        
+        // Funkce pro zobrazení uživatelského profilu
+        function displayUserProfile(user) {
+            loginSection.style.display = 'none';
+            userProfile.style.display = 'block';
+            
+            document.getElementById('user-name').textContent = user.username;
+            document.getElementById('user-discriminator').textContent = '#' + user.discriminator;
+            document.getElementById('user-avatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
+        }
+        
+        // Funkce pro načtení dat z FiveM serveru (simulace)
+        function loadUserData(discordId) {
+            // Simulace načítání dat z FiveM serveru
+            setTimeout(() => {
+                // Simulované postavy
+                const characters = [
+                    { name: "John Doe", level: 15 },
+                    { name: "Michael Smith", level: 8 },
+                    { name: "Carl Johnson", level: 22 }
+                ];
+                
+                // Simulovaná vozidla
+                const vehicles = [
+                    { name: "Sultan RS", plate: "VORTEX1" },
+                    { name: "Elegy RH8", plate: "VORTEX2" },
+                    { name: "Adder", plate: "VORTEX3" }
+                ];
+                
+                // Simulovaný inventář
+                const inventory = [
+                    "Peníze: $15,000",
+                    "Zbraně: Pistole, Brokovnice",
+                    "Telefon",
+                    "Klíče od auta",
+                    "Lékařský kit"
+                ];
+                
+                // Zobrazení postav
+                const characterList = document.getElementById('character-list');
+                characterList.innerHTML = '';
+                characters.forEach(char => {
+                    const charElement = document.createElement('div');
+                    charElement.className = 'character-item';
+                    charElement.innerHTML = `
+                        <div class="character-avatar">${char.name.charAt(0)}</div>
+                        <div class="character-name">${char.name}</div>
+                        <div class="character-level">Level ${char.level}</div>
+                    `;
+                    characterList.appendChild(charElement);
+                });
+                
+                // Zobrazení vozidel
+                const vehicleList = document.getElementById('vehicle-list');
+                vehicleList.innerHTML = '';
+                vehicles.forEach(vehicle => {
+                    const vehicleElement = document.createElement('div');
+                    vehicleElement.className = 'vehicle-item';
+                    vehicleElement.innerHTML = `
+                        <div class="vehicle-icon"><i class="fas fa-car"></i></div>
+                        <div class="vehicle-name">${vehicle.name}</div>
+                        <div class="vehicle-plate">${vehicle.plate}</div>
+                    `;
+                    vehicleList.appendChild(vehicleElement);
+                });
+                
+                // Zobrazení inventáře
+                const inventoryGrid = document.getElementById('inventory-grid');
+                inventoryGrid.innerHTML = '';
+                inventory.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'inventory-item';
+                    itemElement.textContent = item;
+                    inventoryGrid.appendChild(itemElement);
+                });
+            }, 1000);
+        }
+        
+        // Funkce pro přihlášení přes Discord
+        function loginWithDiscord() {
+            // Vytvoření URL pro Discord OAuth2
+            const discordOAuthURL = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(DISCORD_REDIRECT_URI)}&response_type=code&scope=${DISCORD_SCOPE}`;
+            
+            // Přesměrování na Discord OAuth2
+            window.location.href = discordOAuthURL;
+        }
+        
+        // Funkce pro odhlášení
+        function logout() {
+            localStorage.removeItem('discordUserData');
+            loginSection.style.display = 'block';
+            userProfile.style.display = 'none';
+            logoutModal.style.display = 'none';
+        }
+        
+        // Funkce pro zpracování OAuth2 callbacku (simulace)
+        function handleOAuthCallback() {
+            // Zkontrolujeme, zda jsme v callback URL s kódem
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            
+            if (code) {
+                // Simulace výměny kódu za access token a získání uživatelských dat
+                // V reálném případě byste odeslali kód na váš backend
+                
+                // Simulovaná odpověď od Discordu
+                const mockUserData = {
+                    id: "123456789012345678",
+                    username: "ExampleUser",
+                    discriminator: "1234",
+                    avatar: "a_abc123def456"
+                };
+                
+                // Uložení uživatelských dat do localStorage
+                localStorage.setItem('discordUserData', JSON.stringify(mockUserData));
+                
+                // Odstranění parametrů z URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+                
+                // Zobrazení uživatelského profilu
+                displayUserProfile(mockUserData);
+                loadUserData(mockUserData.id);
+            }
+        }
+        
+        // Event listeners
+        discordLoginBtn.addEventListener('click', loginWithDiscord);
+        
+        logoutBtn.addEventListener('click', () => {
+            logoutModal.style.display = 'flex';
+        });
+        
+        confirmLogoutBtn.addEventListener('click', logout);
+        
+        cancelLogoutBtn.addEventListener('click', () => {
+            logoutModal.style.display = 'none';
+        });
+        
+        // Inicializace
+        document.addEventListener('DOMContentLoaded', () => {
+            checkLoginStatus();
+            handleOAuthCallback(); // Zpracování callbacku po přihlášení
+        });
+    </script>
+</body>
+</html>
