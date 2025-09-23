@@ -1027,16 +1027,22 @@
             }
         }
         
-        // OPRAVENÁ Funkce pro kontrolu stavu serveru
+        // OPRAVENÁ Funkce pro kontrolu stavu FiveM serveru
         async function checkServerStatus() {
             try {
-                // FiveM API endpoint - používáme HTTPS
-                const serverIP = "cfx.re/join/ellb5b";
-                const apiUrl = `https://servers-frontend.fivem.net/api/servers/single/${serverIP}`;
+                // FiveM API endpoint - používáme správný formát
+                const endpointId = "ellb5b"; // Pouze endpoint ID
+                const apiUrl = `https://servers-frontend.fivem.net/api/servers/single/${endpointId}`;
                 
                 console.log('Kontroluji stav serveru na:', apiUrl);
                 
-                const response = await fetch(apiUrl);
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    mode: 'cors'
+                });
                 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -1062,14 +1068,14 @@
                     progressFill.style.width = `${fillPercentage}%`;
                     progressText.textContent = `${fillPercentage}% zaplněno (${players}/${maxPlayers})`;
                     
-                    // Ping (simulace)
+                    // Ping (simulace, protože FiveM API neposkytuje ping přímo)
                     pingValue.textContent = Math.floor(Math.random() * 50) + 20;
                     
                     // Čas aktualizace
                     const now = new Date();
                     lastUpdated.textContent = `Naposledy aktualizováno: ${now.toLocaleTimeString()}`;
                     
-                    showNotification('Stav serveru aktualizován', 'success');
+                    console.log('Stav serveru úspěšně načten:', data);
                 } else {
                     throw new Error('Neplatná data ze serveru');
                 }
@@ -1127,8 +1133,20 @@
             setTimeout(() => {
                 showNotification('Vítejte na Project Vortex!', 'success');
             }, 1000);
+            
+            // Event listener pro tlačítko "Tvé údaje"
+            document.getElementById('show-profile').addEventListener('click', function(e) {
+                e.preventDefault();
+                const userData = localStorage.getItem('discordUserData');
+                if (userData) {
+                    const user = JSON.parse(userData);
+                    displayUserProfile(user);
+                    showNotification('Zobrazen tvůj profil', 'success');
+                } else {
+                    showNotification('Pro zobrazení profilu se musíš nejdřív přihlásit', 'error');
+                }
+            });
         });
     </script>
 </body>
 </html>
-
