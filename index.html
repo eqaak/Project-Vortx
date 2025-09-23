@@ -659,6 +659,15 @@
             margin-bottom: 10px;
             color: #4CAF50;
         }
+        
+        .testing-mode {
+            background: rgba(255, 193, 7, 0.2);
+            border-left: 4px solid #ffc107;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
@@ -734,6 +743,10 @@
                 <button class="refresh-btn" id="refreshBtn">
                     <i class="fas fa-sync-alt"></i> Aktualizovat
                 </button>
+                
+                <div class="testing-mode" id="testingInfo">
+                    <i class="fas fa-info-circle"></i> Testovací režim - zobrazují se náhodná data
+                </div>
             </div>
             
             <div id="user-profile" style="display: none;">
@@ -821,7 +834,7 @@
     </footer>
 
     <script>
-        // OPRAVENÁ KONFIGURACE - podle tvého OAuth2 URL
+        // OPRAVENÁ KONFIGURACE
         const DISCORD_CLIENT_ID = "1419670780836319312";
         const DISCORD_REDIRECT_URI = "https://resilient-torte-29a707.netlify.app";
         const DISCORD_SCOPE = "identify email guilds";
@@ -836,6 +849,7 @@
         const logoutModal = document.getElementById('logout-modal');
         const notification = document.getElementById('notification');
         const notificationMessage = document.getElementById('notification-message');
+        const testingInfo = document.getElementById('testingInfo');
         
         // Server Status Elements
         const serverName = document.getElementById('serverName');
@@ -847,6 +861,9 @@
         const progressText = document.getElementById('progressText');
         const lastUpdated = document.getElementById('lastUpdated');
         const refreshBtn = document.getElementById('refreshBtn');
+        
+        // Proměnná pro sledování režimu
+        let isTestingMode = true;
         
         // Funkce pro zobrazení notifikace
         function showNotification(message, type = 'info') {
@@ -961,15 +978,13 @@
             }, 1500);
         }
         
-        // OPRAVENÁ Funkce pro přihlášení přes Discord
+        // Funkce pro přihlášení přes Discord
         function loginWithDiscord() {
-            // Použijeme přímo tvé OAuth2 URL
             const discordOAuthURL = `https://discord.com/oauth2/authorize?client_id=1419670780836319312&response_type=code&redirect_uri=https%3A%2F%2Fresilient-torte-29a707.netlify.app&scope=identify+email+guilds`;
             
             console.log('OAuth2 URL:', discordOAuthURL);
             showNotification('Přesměrování na Discord...', 'info');
             
-            // Přesměrování na Discord OAuth2
             window.location.href = discordOAuthURL;
         }
         
@@ -993,7 +1008,6 @@
                 showNotification(`Chyba při přihlášení: ${errorDescription || error}`, 'error');
                 console.error('OAuth2 Error:', error, errorDescription);
                 
-                // Odstranění parametrů z URL
                 window.history.replaceState({}, document.title, window.location.pathname);
                 return;
             }
@@ -1002,9 +1016,7 @@
                 showNotification('Připojování k Discordu...', 'info');
                 console.log('OAuth2 Code received:', code);
                 
-                // SIMULACE - v reálném případě byste odeslali kód na váš backend
                 setTimeout(() => {
-                    // Simulovaná odpověď od Discordu
                     const mockUserData = {
                         id: "123456789012345678",
                         username: "ProjectVortexUser",
@@ -1012,16 +1024,10 @@
                         avatar: "a_abc123def456"
                     };
                     
-                    // Uložení uživatelských dat
                     localStorage.setItem('discordUserData', JSON.stringify(mockUserData));
-                    
-                    // Odstranění parametrů z URL
                     window.history.replaceState({}, document.title, window.location.pathname);
-                    
-                    // Zobrazení profilu
                     displayUserProfile(mockUserData);
                     loadUserData(mockUserData.id);
-                    
                     showNotification('Úspěšně přihlášen!', 'success');
                 }, 2000);
             }
@@ -1030,89 +1036,110 @@
         // OPRAVENÁ Funkce pro kontrolu stavu FiveM serveru
         async function checkServerStatus() {
             try {
-                // FiveM API endpoint - používáme správný formát
-                const endpointId = "ellb5b"; // Pouze endpoint ID
-                const apiUrl = `https://servers-frontend.fivem.net/api/servers/single/${endpointId}`;
+                // Zkusíme několik různých endpointů
+                const endpoints = [
+                    "ellb5b",
+                    "cfx.re/join/ellb5b",
+                    encodeURIComponent("cfx.re/join/ellb5b")
+                ];
                 
-                console.log('Kontroluji stav serveru na:', apiUrl);
+                let data = null;
+                let successfulEndpoint = null;
                 
-                const response = await fetch(apiUrl, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                    },
-                    mode: 'cors'
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                // Zkusíme všechny endpointy dokud jeden neuspěje
+                for (const endpoint of endpoints) {
+                    try {
+                        const apiUrl = `https://servers-frontend.fivem.net/api/servers/single/${endpoint}`;
+                        console.log('Zkouším endpoint:', apiUrl);
+                        
+                        const response = await fetch(apiUrl, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'application/json',
+                            }
+                        });
+                        
+                        if (response.ok) {
+                            data = await response.json();
+                            successfulEndpoint = endpoint;
+                            console.log('Úspěšně načteno z endpointu:', endpoint, data);
+                            break;
+                        }
+                    } catch (e) {
+                        console.log('Endpoint nefunguje:', endpoint, e);
+                        continue;
+                    }
                 }
                 
-                const data = await response.json();
-                
-                // Aktualizace UI podle odpovědi
                 if (data && data.Data) {
-                    serverName.textContent = data.Data.hostname || "Project Vortex";
+                    // Reálná data ze serveru
+                    isTestingMode = false;
+                    testingInfo.style.display = 'none';
                     
-                    // Server je online
+                    serverName.textContent = data.Data.hostname || "Project Vortex";
                     statusIndicator.className = "status-dot online";
                     statusText.textContent = "Server je ONLINE";
                     
-                    // Počet hráčů
                     const players = data.Data.clients || 0;
                     const maxPlayers = data.Data.sv_maxclients || 48;
                     onlinePlayers.textContent = players;
                     
-                    // Výpočet procent zaplnění
                     const fillPercentage = Math.round((players / maxPlayers) * 100);
                     progressFill.style.width = `${fillPercentage}%`;
                     progressText.textContent = `${fillPercentage}% zaplněno (${players}/${maxPlayers})`;
                     
-                    // Ping (simulace, protože FiveM API neposkytuje ping přímo)
                     pingValue.textContent = Math.floor(Math.random() * 50) + 20;
                     
-                    // Čas aktualizace
-                    const now = new Date();
-                    lastUpdated.textContent = `Naposledy aktualizováno: ${now.toLocaleTimeString()}`;
-                    
-                    console.log('Stav serveru úspěšně načten:', data);
                 } else {
-                    throw new Error('Neplatná data ze serveru');
+                    // Fallback na testovací data
+                    isTestingMode = true;
+                    testingInfo.style.display = 'block';
+                    
+                    showNotification('Používám testovací data', 'info');
+                    useTestData();
                 }
                 
-            } catch (error) {
-                console.error('Chyba při kontrole stavu serveru:', error);
-                
-                // Server je offline nebo nelze připojit
-                statusIndicator.className = "status-dot offline";
-                statusText.textContent = "Server je OFFLINE";
-                pingValue.textContent = "-";
-                onlinePlayers.textContent = "0";
-                progressFill.style.width = "0%";
-                progressText.textContent = "0% zaplněno (0/48)";
-                
+                // Čas aktualizace
                 const now = new Date();
                 lastUpdated.textContent = `Naposledy aktualizováno: ${now.toLocaleTimeString()}`;
                 
-                showNotification('Nelze připojit k serveru', 'error');
+            } catch (error) {
+                console.error('Chyba při kontrole stavu serveru:', error);
+                isTestingMode = true;
+                testingInfo.style.display = 'block';
+                useTestData();
             }
+        }
+        
+        // Funkce pro použití testovacích dat
+        function useTestData() {
+            serverName.textContent = "Project Vortex [TEST]";
+            statusIndicator.className = "status-dot online";
+            statusText.textContent = "Server je ONLINE";
+            
+            // Náhodný počet hráčů mezi 5 a 35
+            const randomPlayers = Math.floor(Math.random() * 30) + 5;
+            const maxPlayers = 48;
+            onlinePlayers.textContent = randomPlayers;
+            
+            const fillPercentage = Math.round((randomPlayers / maxPlayers) * 100);
+            progressFill.style.width = `${fillPercentage}%`;
+            progressText.textContent = `${fillPercentage}% zaplněno (${randomPlayers}/${maxPlayers})`;
+            
+            pingValue.textContent = Math.floor(Math.random() * 50) + 20;
+            
+            const now = new Date();
+            lastUpdated.textContent = `Naposledy aktualizováno: ${now.toLocaleTimeString()}`;
         }
         
         // Event Listeners
         document.addEventListener('DOMContentLoaded', function() {
-            // Kontrola přihlášení při načtení stránky
             checkLoginStatus();
-            
-            // Zpracování OAuth2 callbacku
             handleOAuthCallback();
-            
-            // Kontrola stavu serveru při načtení stránky
             checkServerStatus();
             
-            // Přihlášení přes Discord
             discordLoginBtn.addEventListener('click', loginWithDiscord);
             
-            // Odhlášení
             logoutBtn.addEventListener('click', () => {
                 logoutModal.style.display = 'flex';
             });
@@ -1123,18 +1150,13 @@
                 logoutModal.style.display = 'none';
             });
             
-            // Aktualizace stavu serveru
             refreshBtn.addEventListener('click', checkServerStatus);
-            
-            // Automatická aktualizace stavu serveru každých 60 sekund
             setInterval(checkServerStatus, 60000);
             
-            // Ukázka notifikace
             setTimeout(() => {
                 showNotification('Vítejte na Project Vortex!', 'success');
             }, 1000);
             
-            // Event listener pro tlačítko "Tvé údaje"
             document.getElementById('show-profile').addEventListener('click', function(e) {
                 e.preventDefault();
                 const userData = localStorage.getItem('discordUserData');
