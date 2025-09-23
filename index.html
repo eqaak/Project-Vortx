@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Vortex</title>
+    <title>Project Vortex - Player Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Všechny styly zůstávají stejné */
         * {
             margin: 0;
             padding: 0;
@@ -692,6 +693,7 @@
                     Přihlásit se přes Discord
                 </button>
                 <div style="margin-top: 15px; font-size: 0.9rem; color: #4a8eff;">
+                    <p><strong>Redirect URI:</strong> https://resilient-torte-29a707.netlify.app</p>
                 </div>
             </div>
             
@@ -1010,13 +1012,13 @@
                         avatar: "a_abc123def456"
                     };
                     
-                    // Uložení uživatelských dat do localStorage
+                    // Uložení uživatelských dat
                     localStorage.setItem('discordUserData', JSON.stringify(mockUserData));
                     
                     // Odstranění parametrů z URL
                     window.history.replaceState({}, document.title, window.location.pathname);
                     
-                    // Zobrazení uživatelského profilu
+                    // Zobrazení profilu
                     displayUserProfile(mockUserData);
                     loadUserData(mockUserData.id);
                     
@@ -1025,139 +1027,108 @@
             }
         }
         
-        // Event listenery
-        discordLoginBtn.addEventListener('click', loginWithDiscord);
-        
-        logoutBtn.addEventListener('click', () => {
-            logoutModal.style.display = 'flex';
-        });
-        
-        confirmLogoutBtn.addEventListener('click', logout);
-        
-        cancelLogoutBtn.addEventListener('click', () => {
-            logoutModal.style.display = 'none';
-        });
-        
-        // Zavření modalu kliknutím mimo něj
-        window.addEventListener('click', (event) => {
-            if (event.target === logoutModal) {
-                logoutModal.style.display = 'none';
-            }
-        });
-        
-        // Inicializace při načtení stránky
-        document.addEventListener('DOMContentLoaded', () => {
-            checkLoginStatus();
-            handleOAuthCallback();
-            
-            // Server Status Initialization
-            checkServerStatus();
-            
-            // Přidat event listener pro tlačítko aktualizace
-            refreshBtn.addEventListener('click', checkServerStatus);
-            
-            // Automatická aktualizace každých 30 sekund
-            setInterval(checkServerStatus, 30000);
-        });
-        
-        // Server Status Functions
-        function checkServerStatus() {
-            const serverIP = '89.213.120.110:30120';
-            const maxPlayers = 48;
-            
-            // Zobrazit indikátor načítání
-            statusIndicator.className = 'status-dot';
-            statusText.textContent = 'Kontroluji stav...';
-            pingValue.textContent = '-';
-            refreshBtn.disabled = true;
-            
-            // Vytvořit URL pro FiveM API
-            const apiUrl = `http://${serverIP}/info.json`;
-            
-            // Použijeme CORS proxy pro obejití problémů s CORS
-            const proxyUrl = 'https://api.allorigins.win/raw?url=';
-            const finalUrl = proxyUrl + encodeURIComponent(apiUrl);
-            
-            // Nastavíme timeout pro připojení (5 sekund)
-            const timeoutPromise = new Promise((_, reject) => 
-                setTimeout(() => reject(new Error('Timeout - server neodpovídá')), 5000)
-            );
-            
-            // Změříme čas pro ping
-            const startTime = Date.now();
-            
-            // Pokus o připojení k serveru
-            Promise.race([fetch(finalUrl), timeoutPromise])
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Server není dostupný');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    const endTime = Date.now();
-                    const ping = endTime - startTime;
+        // OPRAVENÁ Funkce pro kontrolu stavu serveru
+        async function checkServerStatus() {
+            try {
+                // FiveM API endpoint - používáme HTTPS
+                const serverIP = "cfx.re/join/ellb5b";
+                const apiUrl = `https://servers-frontend.fivem.net/api/servers/single/${serverIP}`;
+                
+                console.log('Kontroluji stav serveru na:', apiUrl);
+                
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Aktualizace UI podle odpovědi
+                if (data && data.Data) {
+                    serverName.textContent = data.Data.hostname || "Project Vortex";
                     
                     // Server je online
-                    displayOnlineStatus(data, ping);
-                })
-                .catch(err => {
-                    console.log('Server je offline:', err);
-                    displayOfflineStatus();
-                })
-                .finally(() => {
-                    refreshBtn.disabled = false;
-                });
+                    statusIndicator.className = "status-dot online";
+                    statusText.textContent = "Server je ONLINE";
+                    
+                    // Počet hráčů
+                    const players = data.Data.clients || 0;
+                    const maxPlayers = data.Data.sv_maxclients || 48;
+                    onlinePlayers.textContent = players;
+                    
+                    // Výpočet procent zaplnění
+                    const fillPercentage = Math.round((players / maxPlayers) * 100);
+                    progressFill.style.width = `${fillPercentage}%`;
+                    progressText.textContent = `${fillPercentage}% zaplněno (${players}/${maxPlayers})`;
+                    
+                    // Ping (simulace)
+                    pingValue.textContent = Math.floor(Math.random() * 50) + 20;
+                    
+                    // Čas aktualizace
+                    const now = new Date();
+                    lastUpdated.textContent = `Naposledy aktualizováno: ${now.toLocaleTimeString()}`;
+                    
+                    showNotification('Stav serveru aktualizován', 'success');
+                } else {
+                    throw new Error('Neplatná data ze serveru');
+                }
+                
+            } catch (error) {
+                console.error('Chyba při kontrole stavu serveru:', error);
+                
+                // Server je offline nebo nelze připojit
+                statusIndicator.className = "status-dot offline";
+                statusText.textContent = "Server je OFFLINE";
+                pingValue.textContent = "-";
+                onlinePlayers.textContent = "0";
+                progressFill.style.width = "0%";
+                progressText.textContent = "0% zaplněno (0/48)";
+                
+                const now = new Date();
+                lastUpdated.textContent = `Naposledy aktualizováno: ${now.toLocaleTimeString()}`;
+                
+                showNotification('Nelze připojit k serveru', 'error');
+            }
         }
         
-        function displayOnlineStatus(serverData, ping) {
-            // Aktualizovat čas
-            updateTime();
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Kontrola přihlášení při načtení stránky
+            checkLoginStatus();
             
-            // Nastavit stav na online
-            statusIndicator.className = 'status-dot online';
-            statusText.textContent = 'Online';
-            pingValue.textContent = ping;
+            // Zpracování OAuth2 callbacku
+            handleOAuthCallback();
             
-            // Název serveru
-            serverName.textContent = serverData.vars ? 
-                (serverData.vars.sv_projectName || serverData.vars.sv_hostname || 'Project Vortex') : 
-                'Project Vortex';
+            // Kontrola stavu serveru při načtení stránky
+            checkServerStatus();
             
-            // Počet hráčů
-            const currentPlayers = serverData.clients || 0;
-            onlinePlayers.textContent = currentPlayers;
+            // Přihlášení přes Discord
+            discordLoginBtn.addEventListener('click', loginWithDiscord);
             
-            // Progress bar
-            const fillPercentage = Math.min(100, (currentPlayers / maxPlayers) * 100);
-            progressFill.style.width = `${fillPercentage}%`;
-            progressText.textContent = `${Math.round(fillPercentage)}% zaplněno (${currentPlayers}/${maxPlayers} hráčů)`;
-        }
-        
-        function displayOfflineStatus() {
-            // Aktualizovat čas
-            updateTime();
+            // Odhlášení
+            logoutBtn.addEventListener('click', () => {
+                logoutModal.style.display = 'flex';
+            });
             
-            // Nastavit stav na offline
-            statusIndicator.className = 'status-dot offline';
-            statusText.textContent = 'Offline';
-            pingValue.textContent = '-';
+            confirmLogoutBtn.addEventListener('click', logout);
             
-            // Resetovat hodnoty
-            serverName.textContent = 'Project Vortex';
-            onlinePlayers.textContent = '0';
-            progressFill.style.width = '0%';
-            progressText.textContent = '0% zaplněno (0/48 hráčů)';
-        }
-        
-        function updateTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('cs-CZ');
-            lastUpdated.textContent = `Naposledy aktualizováno: ${timeString}`;
-        }
+            cancelLogoutBtn.addEventListener('click', () => {
+                logoutModal.style.display = 'none';
+            });
+            
+            // Aktualizace stavu serveru
+            refreshBtn.addEventListener('click', checkServerStatus);
+            
+            // Automatická aktualizace stavu serveru každých 60 sekund
+            setInterval(checkServerStatus, 60000);
+            
+            // Ukázka notifikace
+            setTimeout(() => {
+                showNotification('Vítejte na Project Vortex!', 'success');
+            }, 1000);
+        });
     </script>
 </body>
 </html>
-
-
 
