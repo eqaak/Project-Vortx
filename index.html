@@ -659,15 +659,6 @@
             margin-bottom: 10px;
             color: #4CAF50;
         }
-        
-        .testing-mode {
-            background: rgba(255, 193, 7, 0.2);
-            border-left: 4px solid #ffc107;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            font-size: 12px;
-        }
     </style>
 </head>
 <body>
@@ -743,10 +734,6 @@
                 <button class="refresh-btn" id="refreshBtn">
                     <i class="fas fa-sync-alt"></i> Aktualizovat
                 </button>
-                
-                <div class="testing-mode" id="testingInfo">
-                    <i class="fas fa-info-circle"></i> Testovací režim - zobrazují se náhodná data
-                </div>
             </div>
             
             <div id="user-profile" style="display: none;">
@@ -849,7 +836,6 @@
         const logoutModal = document.getElementById('logout-modal');
         const notification = document.getElementById('notification');
         const notificationMessage = document.getElementById('notification-message');
-        const testingInfo = document.getElementById('testingInfo');
         
         // Server Status Elements
         const serverName = document.getElementById('serverName');
@@ -861,9 +847,6 @@
         const progressText = document.getElementById('progressText');
         const lastUpdated = document.getElementById('lastUpdated');
         const refreshBtn = document.getElementById('refreshBtn');
-        
-        // Proměnná pro sledování režimu
-        let isTestingMode = true;
         
         // Funkce pro zobrazení notifikace
         function showNotification(message, type = 'info') {
@@ -1033,101 +1016,73 @@
             }
         }
         
-        // OPRAVENÁ Funkce pro kontrolu stavu FiveM serveru
+        // OPRAVENÁ Funkce pro kontrolu stavu FiveM serveru - POUŽÍVÁ CFX.RE API
         async function checkServerStatus() {
             try {
-                // Zkusíme několik různých endpointů
-                const endpoints = [
-                    "ellb5b",
-                    "cfx.re/join/ellb5b",
-                    encodeURIComponent("cfx.re/join/ellb5b")
-                ];
+                // Použijeme CFX.re API, které je spolehlivější
+                const apiUrl = `https://servers-frontend.fivem.net/api/servers/single/ellb5b`;
                 
-                let data = null;
-                let successfulEndpoint = null;
+                console.log('Kontroluji stav serveru na:', apiUrl);
                 
-                // Zkusíme všechny endpointy dokud jeden neuspěje
-                for (const endpoint of endpoints) {
-                    try {
-                        const apiUrl = `https://servers-frontend.fivem.net/api/servers/single/${endpoint}`;
-                        console.log('Zkouším endpoint:', apiUrl);
-                        
-                        const response = await fetch(apiUrl, {
-                            method: 'GET',
-                            headers: {
-                                'Accept': 'application/json',
-                            }
-                        });
-                        
-                        if (response.ok) {
-                            data = await response.json();
-                            successfulEndpoint = endpoint;
-                            console.log('Úspěšně načteno z endpointu:', endpoint, data);
-                            break;
-                        }
-                    } catch (e) {
-                        console.log('Endpoint nefunguje:', endpoint, e);
-                        continue;
-                    }
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    // Přidáme timeout 10 sekund
+                    signal: AbortSignal.timeout(10000)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 
+                const data = await response.json();
+                
+                // Kontrola, zda data obsahují potřebné informace
                 if (data && data.Data) {
-                    // Reálná data ze serveru
-                    isTestingMode = false;
-                    testingInfo.style.display = 'none';
-                    
                     serverName.textContent = data.Data.hostname || "Project Vortex";
-                    statusIndicator.className = "status-dot online";
-                    statusText.textContent = "Server je ONLINE";
                     
-                    const players = data.Data.clients || 0;
-                    const maxPlayers = data.Data.sv_maxclients || 48;
-                    onlinePlayers.textContent = players;
-                    
-                    const fillPercentage = Math.round((players / maxPlayers) * 100);
-                    progressFill.style.width = `${fillPercentage}%`;
-                    progressText.textContent = `${fillPercentage}% zaplněno (${players}/${maxPlayers})`;
-                    
-                    pingValue.textContent = Math.floor(Math.random() * 50) + 20;
-                    
+                    // Kontrola, zda je server online
+                    if (data.Data.clients !== undefined) {
+                        statusIndicator.className = "status-dot online";
+                        statusText.textContent = "Server je ONLINE";
+                        
+                        const players = data.Data.clients || 0;
+                        const maxPlayers = data.Data.sv_maxclients || 48;
+                        onlinePlayers.textContent = players;
+                        
+                        const fillPercentage = Math.round((players / maxPlayers) * 100);
+                        progressFill.style.width = `${fillPercentage}%`;
+                        progressText.textContent = `${fillPercentage}% zaplněno (${players}/${maxPlayers})`;
+                        
+                        // Ping simulujeme, protože FiveM API ho neposkytuje
+                        pingValue.textContent = "25";
+                        
+                        showNotification('Stav serveru úspěšně načten', 'success');
+                    } else {
+                        // Server je offline
+                        throw new Error('Server není dostupný');
+                    }
                 } else {
-                    // Fallback na testovací data
-                    isTestingMode = true;
-                    testingInfo.style.display = 'block';
-                    
-                    showNotification('Používám testovací data', 'info');
-                    useTestData();
+                    throw new Error('Neplatná data ze serveru');
                 }
-                
-                // Čas aktualizace
-                const now = new Date();
-                lastUpdated.textContent = `Naposledy aktualizováno: ${now.toLocaleTimeString()}`;
                 
             } catch (error) {
                 console.error('Chyba při kontrole stavu serveru:', error);
-                isTestingMode = true;
-                testingInfo.style.display = 'block';
-                useTestData();
+                
+                // Server je offline
+                statusIndicator.className = "status-dot offline";
+                statusText.textContent = "Server je OFFLINE";
+                onlinePlayers.textContent = "0";
+                progressFill.style.width = "0%";
+                progressText.textContent = "0% zaplněno (0/48)";
+                pingValue.textContent = "-";
+                
+                showNotification('Server je momentálně offline', 'error');
             }
-        }
-        
-        // Funkce pro použití testovacích dat
-        function useTestData() {
-            serverName.textContent = "Project Vortex [TEST]";
-            statusIndicator.className = "status-dot online";
-            statusText.textContent = "Server je ONLINE";
             
-            // Náhodný počet hráčů mezi 5 a 35
-            const randomPlayers = Math.floor(Math.random() * 30) + 5;
-            const maxPlayers = 48;
-            onlinePlayers.textContent = randomPlayers;
-            
-            const fillPercentage = Math.round((randomPlayers / maxPlayers) * 100);
-            progressFill.style.width = `${fillPercentage}%`;
-            progressText.textContent = `${fillPercentage}% zaplněno (${randomPlayers}/${maxPlayers})`;
-            
-            pingValue.textContent = Math.floor(Math.random() * 50) + 20;
-            
+            // Vždy aktualizujeme čas
             const now = new Date();
             lastUpdated.textContent = `Naposledy aktualizováno: ${now.toLocaleTimeString()}`;
         }
