@@ -81,7 +81,10 @@
         .info-box { margin-bottom:20px; padding:15px; background:rgba(0,0,0,0.3); border-radius:10px; border-left:4px solid #2a5298; }
         .info-title { font-size:1rem; color:#aaa; margin-bottom:8px; }
         .character-list, .vehicle-list, .inventory-grid { max-height:300px; overflow-y:auto; }
+        .character-item, .vehicle-item, .inventory-item { display:flex; align-items:center; padding:10px; background:rgba(255,255,255,0.05); border-radius:8px; margin-bottom:8px; }
+        .character-avatar { width:40px; height:40px; border-radius:50%; background:#2a5298; display:flex; align-items:center; justify-content:center; margin-right:12px; font-weight:bold; }
         .inventory-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(80px,1fr)); gap:10px; }
+        .inventory-item { flex-direction:column; text-align:center; }
         .empty-message { color: #aaa; text-align: center; padding: 20px; font-style: italic; }
     </style>
 </head>
@@ -95,12 +98,9 @@
         </div>
 
         <div class="user-profile">
-            <div class="user-avatar">
-                <i class="fas fa-user"></i>
-            </div>
+            <img src="https://cdn.discordapp.com/embed/avatars/0.png" class="user-avatar" id="user-avatar">
             <div class="user-info">
-                <div class="user-name">Uživatel</div>
-                <div class="user-discriminator">#0000</div>
+                <div class="user-name" id="user-name">Uživatel</div>
             </div>
             <button class="logout-btn" onclick="logout()">
                 <i class="fas fa-sign-out-alt"></i> Odhlásit
@@ -109,97 +109,47 @@
 
         <div class="info-box">
             <div class="info-title">TVÉ POSTAVY</div>
-            <div class="character-list">
+            <div class="character-list" id="character-list">
                 <div class="empty-message">Žádné postavy</div>
             </div>
         </div>
 
         <div class="info-box">
             <div class="info-title">VLASTNĚNÁ VOZIDLA</div>
-            <div class="vehicle-list">
+            <div class="vehicle-list" id="vehicle-list">
                 <div class="empty-message">Žádná vozidla</div>
             </div>
         </div>
 
         <div class="info-box">
             <div class="info-title">INVENTÁŘ</div>
-            <div class="inventory-grid">
+            <div class="inventory-grid" id="inventory-grid">
                 <div class="empty-message">Inventář je prázdný</div>
             </div>
         </div>
     </div>
 
     <script>
-        // Funkce pro odhlášení s vymazáním session
         function logout() {
             if (confirm('Opravdu se chcete odhlásit?')) {
-                // Vymazat localStorage/sessionStorage
-                localStorage.removeItem('userToken');
-                localStorage.removeItem('userData');
-                sessionStorage.clear();
-                
-                // Vymazat cookies
-                document.cookie.split(";").forEach(function(c) {
-                    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-                });
-                
-                // Přesměrování na hlavní stránku s parametrem pro potvrzení odhlášení
-                window.location.href = 'https://protjectvortex.netlify.app?logout=success';
+                window.location.href = 'login.html';
             }
         }
 
-        // Funkce pro návrat na hlavní stránku
         function goBack() {
             if (confirm('Chcete se vrátit na hlavní stránku?')) {
-                window.location.href = 'https://protjectvortex.netlify.app';
+                window.location.href = 'index.html';
             }
         }
 
-        // Kontrola, zda je uživatel přihlášen (základní ochrana)
-        function checkAuth() {
-            const token = localStorage.getItem('userToken');
-            if (!token) {
-                alert('Nejste přihlášen! Přesměrování na hlavní stránku...');
-                window.location.href = 'https://protjectvortex.netlify.app';
-                return false;
-            }
-            return true;
-        }
-
-        // Kontrola při načtení stránky
-        document.addEventListener('DOMContentLoaded', function() {
-            // Pro testování můžeš zakomentovat následující řádek:
-            // checkAuth();
-            
-            // Načíst uživatelská data pokud existují
-            const userData = localStorage.getItem('userData');
-            if (userData) {
-                try {
-                    const data = JSON.parse(userData);
-                    document.querySelector('.user-name').textContent = data.name || 'Uživatel';
-                    document.querySelector('.user-discriminator').textContent = data.discriminator || '#0000';
-                } catch (e) {
-                    console.error('Chyba při načítání uživatelských dat');
-                }
-            }
-        });
-
-        // Klávesové zkratky
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 goBack();
             }
             if (event.ctrlKey && event.key === 'q') {
-                event.preventDefault();
                 logout();
             }
         });
-
-        // Zabránit návratu zpět po odhlášení
-        window.history.pushState(null, null, window.location.href);
-        window.onpopstate = function() {
-            window.history.go(1);
-        };
     </script>
 </body>
 </html>
