@@ -692,7 +692,6 @@
                     Přihlásit se přes Discord
                 </button>
                 <div style="margin-top: 15px; font-size: 0.9rem; color: #4a8eff;">
-                    <p><strong>Redirect URI:</strong> https://resilient-torte-29a707.netlify.app</p>
                 </div>
             </div>
             
@@ -735,38 +734,9 @@
                 </button>
             </div>
             
+            <!-- Dashboard panel je skrytý - přesunut na samostatnou stránku -->
             <div id="user-profile" style="display: none;">
-                <div class="user-profile">
-                    <img src="" class="user-avatar" id="user-avatar" alt="User Avatar">
-                    <div class="user-info">
-                        <div class="user-name" id="user-name">Username</div>
-                        <div class="user-discriminator" id="user-discriminator">#0000</div>
-                    </div>
-                    <button class="logout-btn" id="logout-btn">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </button>
-                </div>
-                
-                <div class="info-box">
-                    <div class="info-title">TVÉ POSTAVY</div>
-                    <div class="character-list" id="character-list">
-                        <div class="loading">Načítám postavy...</div>
-                    </div>
-                </div>
-                
-                <div class="info-box">
-                    <div class="info-title">VLASTNĚNÁ VOZIDLA</div>
-                    <div class="vehicle-list" id="vehicle-list">
-                        <div class="loading">Načítám vozidla...</div>
-                    </div>
-                </div>
-                
-                <div class="info-box">
-                    <div class="info-title">INVENTÁŘ</div>
-                    <div class="inventory-grid" id="inventory-grid">
-                        <div class="loading">Načítám inventář...</div>
-                    </div>
-                </div>
+                <!-- Tento obsah je nyní na samostatné stránce dashboard.html -->
             </div>
         </div>
         
@@ -775,10 +745,15 @@
                 <i class="fas fa-wind"></i> PROJECT VORTEX
             </div>
             
-            <header>Project Vortex</header>
-            <p style="text-align: center; color: #aaa; margin-top: 5px; font-size: 1.1rem;">
-                Czech FiveM Roleplay Server
-            </p>
+            <div class="info-box">
+                <div class="info-title">O SERVERU</div>
+                <p style="text-align: center; color: #ffffff; margin-top: 5px; font-size: 1.1rem;">
+                    Vítejte na Project Vortex - českém FiveM RP serveru! Hrajeme každý den od 18:00 do 00:00. Server je optimalizován pro maximální výkon a zábavu.
+                </p>
+                <p style="text-align: center; color: #ffffff; margin-top: 10px;">
+                    Moderní RP prostředí s jedinečným příběhem a pravidly.
+                </p>
+            </div>
             
             <div class="buttons-row">
                 <a class="button discord" href="https://discord.gg/hqXuR7bHDX" target="_blank">
@@ -791,7 +766,8 @@
                     PRAVIDLA
                 </a>
 
-                <a href="#" class="button" id="show-profile">
+                <!-- ZMĚNA: Tlačítko nyní odkazuje na dashboard a kontroluje přihlášení -->
+                <a href="https://protjectvortex.netlify.app/dashboard" class="button" id="show-profile">
                     <i class="fas fa-user"></i>
                     TVÉ ÚDAJE
                 </a>
@@ -799,12 +775,6 @@
                 <a href="fivem://connect/cfx.re/join/ellb5b" class="connect-button">
                     <i class="fas fa-play"></i> Připojit se k serveru
                 </a>
-            </div>
-            
-            <div class="info-box">
-                <div class="info-title">O SERVERU</div>
-                <p>Vítejte na Project Vortex - českém FiveM RP serveru! Hrajeme každý den od 18:00 do 00:00. Server je optimalizován pro maximální výkon a zábavu.</p>
-                <p>Moderní RP prostředí s jedinečným příběhem a pravidly.</p>
             </div>
             
             <!-- ODKAZ NA PODPORU -->
@@ -822,7 +792,7 @@
     <script>
         // OPRAVENÁ KONFIGURACE
         const DISCORD_CLIENT_ID = "1419670780836319312";
-        const DISCORD_REDIRECT_URI = "https://resilient-torte-29a707.netlify.app";
+        const DASHBOARD_URL = "https://protjectvortex.netlify.app/dashboard";
         
         // DOM elementy
         const loginSection = document.getElementById('login-section');
@@ -834,6 +804,7 @@
         const logoutModal = document.getElementById('logout-modal');
         const notification = document.getElementById('notification');
         const notificationMessage = document.getElementById('notification-message');
+        const showProfileBtn = document.getElementById('show-profile');
         
         // Server Status Elements
         const serverName = document.getElementById('serverName');
@@ -864,8 +835,8 @@
             if (userData) {
                 try {
                     const user = JSON.parse(userData);
-                    displayUserProfile(user);
-                    loadUserData(user.id);
+                    // Uživatel je přihlášen - skryj login sekci
+                    loginSection.style.display = 'none';
                     showNotification(`Vítej zpět, ${user.username}!`, 'success');
                 } catch (e) {
                     localStorage.removeItem('discordUserData');
@@ -874,108 +845,14 @@
             }
         }
         
-        // Funkce pro zobrazení uživatelského profilu
-        function displayUserProfile(user) {
-            loginSection.style.display = 'none';
-            userProfile.style.display = 'block';
-            
-            document.getElementById('user-name').textContent = user.username;
-            document.getElementById('user-discriminator').textContent = '#' + user.discriminator;
-            
-            // Avatar uživatele
-            if (user.avatar) {
-                document.getElementById('user-avatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
-            } else {
-                // Výchozí avatar pokud uživatel nemá nastavený
-                const defaultAvatarNumber = parseInt(user.discriminator) % 5;
-                document.getElementById('user-avatar').src = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarNumber}.png`;
-            }
-        }
-        
-        // Funkce pro načtení dat z FiveM serveru (simulace)
-        function loadUserData(discordId) {
-            // Simulace načítání dat z FiveM serveru
-            setTimeout(() => {
-                // Simulované postavy
-                const characters = [
-                    { name: "John Doe", level: 15 },
-                    { name: "Michael Smith", level: 8 },
-                    { name: "Carl Johnson", level: 22 }
-                ];
-                
-                // Simulovaná vozidla
-                const vehicles = [
-                    { name: "Sultan RS", plate: "VORTEX1" },
-                    { name: "Elegy RH8", plate: "VORTEX2" },
-                    { name: "Adder", plate: "VORTEX3" }
-                ];
-                
-                // Simulovaný inventář
-                const inventory = [
-                    "Peníze: $15,000",
-                    "Zbraně: Pistole, Brokovnice",
-                    "Telefon",
-                    "Klíče od auta",
-                    "Lékařský kit"
-                ];
-                
-                // Zobrazení postav
-                const characterList = document.getElementById('character-list');
-                characterList.innerHTML = '';
-                characters.forEach(char => {
-                    const charElement = document.createElement('div');
-                    charElement.className = 'character-item';
-                    charElement.innerHTML = `
-                        <div class="character-avatar">${char.name.charAt(0)}</div>
-                        <div class="character-name">${char.name}</div>
-                        <div class="character-level">Level ${char.level}</div>
-                    `;
-                    characterList.appendChild(charElement);
-                });
-                
-                // Zobrazení vozidel
-                const vehicleList = document.getElementById('vehicle-list');
-                vehicleList.innerHTML = '';
-                vehicles.forEach(vehicle => {
-                    const vehicleElement = document.createElement('div');
-                    vehicleElement.className = 'vehicle-item';
-                    vehicleElement.innerHTML = `
-                        <div class="vehicle-icon"><i class="fas fa-car"></i></div>
-                        <div class="vehicle-name">${vehicle.name}</div>
-                        <div class="vehicle-plate">${vehicle.plate}</div>
-                    `;
-                    vehicleList.appendChild(vehicleElement);
-                });
-                
-                // Zobrazení inventáře
-                const inventoryGrid = document.getElementById('inventory-grid');
-                inventoryGrid.innerHTML = '';
-                inventory.forEach(item => {
-                    const itemElement = document.createElement('div');
-                    itemElement.className = 'inventory-item';
-                    itemElement.textContent = item;
-                    inventoryGrid.appendChild(itemElement);
-                });
-            }, 1500);
-        }
-        
         // Funkce pro přihlášení přes Discord
         function loginWithDiscord() {
-            const discordOAuthURL = `https://discord.com/oauth2/authorize?client_id=1419670780836319312&response_type=code&redirect_uri=https%3A%2F%2Fresilient-torte-29a707.netlify.app&scope=identify+email+guilds`;
+            const discordOAuthURL = `https://discord.com/oauth2/authorize?client_id=1419670780836319312&response_type=code&redirect_uri=https%3A%2F%2Fprotjectvortex.netlify.app&scope=identify+guilds+email`;
             
             console.log('OAuth2 URL:', discordOAuthURL);
             showNotification('Přesměrování na Discord...', 'info');
             
             window.location.href = discordOAuthURL;
-        }
-        
-        // Funkce pro odhlášení
-        function logout() {
-            localStorage.removeItem('discordUserData');
-            loginSection.style.display = 'block';
-            userProfile.style.display = 'none';
-            logoutModal.style.display = 'none';
-            showNotification('Byl jsi úspěšně odhlášen', 'success');
         }
         
         // Funkce pro zpracování OAuth2 callbacku
@@ -997,6 +874,7 @@
                 showNotification('Připojování k Discordu...', 'info');
                 console.log('OAuth2 Code received:', code);
                 
+                // Simulace úspěšného přihlášení
                 setTimeout(() => {
                     const mockUserData = {
                         id: "123456789012345678",
@@ -1007,23 +885,25 @@
                     
                     localStorage.setItem('discordUserData', JSON.stringify(mockUserData));
                     window.history.replaceState({}, document.title, window.location.pathname);
-                    displayUserProfile(mockUserData);
-                    loadUserData(mockUserData.id);
-                    showNotification('Úspěšně přihlášen!', 'success');
+                    
+                    // PO PŘIHLÁŠENÍ PŘESMĚRUJ NA DASHBOARD
+                    showNotification('Úspěšně přihlášen! Přesměrování na dashboard...', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = DASHBOARD_URL;
+                    }, 1500);
                 }, 2000);
             }
         }
         
-        // OPRAVENÁ Funkce pro kontrolu stavu FiveM serveru
+        // Funkce pro kontrolu stavu FiveM serveru
         async function checkServerStatus() {
             try {
-                // Zobrazit indikátor načítání
                 statusIndicator.className = 'status-dot';
                 statusText.textContent = 'Kontroluji stav...';
                 pingValue.textContent = '-';
                 refreshBtn.disabled = true;
                 
-                // Použijeme CFX.re API, které je spolehlivější
                 const apiUrl = `https://servers-frontend.fivem.net/api/servers/single/ellb5b`;
                 
                 console.log('Kontroluji stav serveru na:', apiUrl);
@@ -1041,11 +921,9 @@
                 
                 const data = await response.json();
                 
-                // Kontrola, zda data obsahují potřebné informace
                 if (data && data.Data) {
                     serverName.textContent = data.Data.hostname || "Project Vortex";
                     
-                    // Kontrola, zda je server online
                     if (data.Data.clients !== undefined) {
                         statusIndicator.className = "status-dot online";
                         statusText.textContent = "Server je ONLINE";
@@ -1058,12 +936,10 @@
                         progressFill.style.width = `${fillPercentage}%`;
                         progressText.textContent = `${fillPercentage}% zaplněno (${players}/${maxPlayers})`;
                         
-                        // Ping simulujeme, protože FiveM API ho neposkytuje
                         pingValue.textContent = "25";
                         
                         showNotification('Stav serveru úspěšně načten', 'success');
                     } else {
-                        // Server je offline
                         throw new Error('Server není dostupný');
                     }
                 } else {
@@ -1073,7 +949,6 @@
             } catch (error) {
                 console.error('Chyba při kontrole stavu serveru:', error);
                 
-                // Server je offline
                 statusIndicator.className = "status-dot offline";
                 statusText.textContent = "Server je OFFLINE";
                 onlinePlayers.textContent = "0";
@@ -1086,7 +961,6 @@
                 refreshBtn.disabled = false;
             }
             
-            // Vždy aktualizujeme čas
             const now = new Date();
             lastUpdated.textContent = `Naposledy aktualizováno: ${now.toLocaleTimeString()}`;
         }
@@ -1099,50 +973,34 @@
             
             discordLoginBtn.addEventListener('click', loginWithDiscord);
             
-            logoutBtn.addEventListener('click', () => {
-                logoutModal.style.display = 'flex';
-            });
-            
-            confirmLogoutBtn.addEventListener('click', logout);
-            
-            cancelLogoutBtn.addEventListener('click', () => {
-                logoutModal.style.display = 'none';
-            });
-            
-            // Zavření modalu kliknutím mimo něj
-            window.addEventListener('click', (event) => {
-                if (event.target === logoutModal) {
-                    logoutModal.style.display = 'none';
+            // Event listener pro tlačítko "Tvé údaje" - kontrola přihlášení
+            showProfileBtn.addEventListener('click', function(e) {
+                const userData = localStorage.getItem('discordUserData');
+                
+                if (!userData) {
+                    // Uživatel není přihlášen - zobraz oznámení a zabraň přesměrování
+                    e.preventDefault();
+                    showNotification('Pro zobrazení tvých údajů se musíš nejdřív přihlásit', 'error');
+                    
+                    // Přidat animaci k login tlačítku pro upozornění
+                    discordLoginBtn.style.transform = 'scale(1.05)';
+                    discordLoginBtn.style.boxShadow = '0 0 20px rgba(88, 101, 242, 0.6)';
+                    setTimeout(() => {
+                        discordLoginBtn.style.transform = '';
+                        discordLoginBtn.style.boxShadow = '';
+                    }, 1000);
                 }
+                // Pokud je uživatel přihlášen, přesměrování proběhne normálně
             });
             
-            // Aktualizace stavu serveru
             refreshBtn.addEventListener('click', checkServerStatus);
             
-            // Automatická aktualizace stavu serveru každých 60 sekund
             setInterval(checkServerStatus, 60000);
             
-            // Ukázka notifikace
             setTimeout(() => {
                 showNotification('Vítejte na Project Vortex!', 'success');
             }, 1000);
-            
-            // Event listener pro tlačítko "Tvé údaje"
-            document.getElementById('show-profile').addEventListener('click', function(e) {
-                e.preventDefault();
-                const userData = localStorage.getItem('discordUserData');
-                if (userData) {
-                    const user = JSON.parse(userData);
-                    displayUserProfile(user);
-                    showNotification('Zobrazen tvůj profil', 'success');
-                } else {
-                    showNotification('Pro zobrazení profilu se musíš nejdřív přihlásit', 'error');
-                }
-            });
         });
     </script>
 </body>
 </html>
-
-
-

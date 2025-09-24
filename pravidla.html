@@ -5,110 +5,445 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pravidla</title>
 <style>
-body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; line-height: 1.6; }
-header { background: #222; color: white; padding: 20px 10px; text-align: center; font-size: 28px; font-weight: bold; letter-spacing: 2px; }
-.container { max-width: 1200px; margin: 30px auto; padding: 30px; background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-h2 { font-size: 24px; margin-top: 30px; color: #222; text-transform: uppercase; border-left: 5px solid #007bff; padding-left: 10px; }
-p { font-size: 18px; margin: 10px 0 20px 0; }
-.back-btn { display: inline-block; margin-top: 20px; text-decoration: none; background: #007bff; color: white; padding: 12px 25px; border-radius: 8px; font-size: 18px; transition: 0.3s; }
-.back-btn:hover { background: #0056b3; }
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body {
+    background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), 
+                url('https://images.unsplash.com/photo-1519791883288-dc8bd696e667?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+    background-size: cover;
+    color:white;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:20px;
+}
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 20px;
+    padding: 20px 30px;
+    background: rgba(10,10,10,0.9); 
+    border-radius: 10px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+    border:1px solid rgba(100,150,255,0.2);
+}
+.back-btn {
+    background: rgba(74, 142, 255, 0.2);
+    border: none;
+    color: #4a8eff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    flex-shrink: 0;
+}
+.back-btn:hover {
+    background: rgba(74, 142, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+.search-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    flex-shrink: 0;
+}
+.search-box {
+    background: rgba(30,30,40,0.9);
+    border: 1px solid rgba(100,150,255,0.3);
+    border-radius: 8px;
+    color: white;
+    padding: 12px 15px 12px 40px;
+    width: 300px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.search-box:focus {
+    outline: none;
+    border-color: #4a8eff;
+    box-shadow: 0 0 10px rgba(74, 142, 255, 0.5);
+    width: 350px;
+}
+.search-icon {
+    position: absolute;
+    left: 15px;
+    color: #4a8eff;
+    font-size: 18px;
+    z-index: 1;
+}
+.container { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 30px; 
+    background: rgba(10,10,10,0.9); 
+    border-radius: 10px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+    border:1px solid rgba(100,150,255,0.2);
+    width: 100%;
+}
+h1 {
+    font-size: 32px;
+    margin: 0;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    flex-grow: 1;
+}
+h2 { 
+    font-size: 22px; 
+    margin-top: 25px; 
+    color: #fff; 
+    text-transform: uppercase; 
+    border-left: 5px solid #007bff; 
+    padding-left: 12px; 
+    background: rgba(30,30,40,0.5);
+    padding: 10px 12px;
+    border-radius: 5px;
+}
+p { 
+    font-size: 16px; 
+    margin: 12px 0 20px 0; 
+    color: #ddd;
+    line-height: 1.6;
+    padding: 0 10px;
+}
+.highlight {
+    background-color: rgba(255, 215, 0, 0.3);
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-weight: bold;
+    color: #ffd700;
+}
+.rule-item {
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(100,150,255,0.1);
+    padding-bottom: 20px;
+}
+.rule-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* Responzivní styly */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    .search-box {
+        width: 100%;
+    }
+    .search-box:focus {
+        width: 100%;
+    }
+    h1 {
+        margin: 10px 0;
+    }
+}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-<header>📜 PRAVIDLA SERVERU</header>
-<div class="container">
-<h2>RP (Roleplay)</h2>
-<p>Hraní za fiktivní postavu ve smyšleném herním světě. Reagujeme na situace tak, jako v běžném životě.</p>
-<h2>OOC (Out Of Character)</h2>
-<p>Komunikace mezi hráči mimo roleplay. Informace získané mimo herní svět RP nelze využít v IC (Metagaming).</p>
-<h2>Command /me</h2>
-<p>Popisuje aktivitu postavy, nahrazuje animace, které nelze vykonat pomocí herní mechaniky.</p>
-<h2>Command /do</h2>
-<p>Popisuje vykonanou aktivitu, přičemž je očekávána reakce jiného hráče. V /do nesdílíme své myšlenky a pocity. V tomto commandu je zakázáno lhát!</p>
-<h2>Lokální chat</h2>
-<p>(OOC chat ve hře) Lokální chat, který se nachází přímo ve hře slouží výhradně pro sdělení důležitých informací- neslouží ke komunikaci a nadávkám! Na lokální chat se také vztahují komunitní pravidla.</p>
-<h2>Metagaming</h2>
-<p>Zneužití informací, které získáme mimo herní svět (OOC), přičemž tyto informace následně využijeme za postavu v herním světě (IC). - Je zakázáno využívat informace, které vaše postava neví a nemá se k nim jak dostat (např. využití informací po CK). - Je zakázáno přenášet informace mezi postavami (v rámci multicharu), jedná se o porušení pravidel, které je trestáno banem - metagaming!</p>
-<h2>Mixing</h2>
-<p>Vzájemné přenášení slovních spojení, sdělení, pocitů a nálad mezi OOC a IC. - Toto přenášení informací může mít různou podobu - písemnou/slovní. - Je přísně zakázáno používat nevhodná slova a výrazy, které narušují herní atmosféru nebo nejsou v souladu s IC prostředím, jako například "upocenej", "lolíček", "nepoť to" a podobné. Tyto výrazy jsou považovány za mixing a jejich užívání může vést k postihům.</p>
-<h2>KOS (Kill on sight)</h2>
-<p>Toto pravidlo zakazuje zabití jakéhokoli hráče, bez pádného RP důvodu a předešlé RP interakce.</p>
-<h2>VDM (Vehicle Deathmatch)</h2>
-<p>Úmyslné narážení do okolních vozidel a objektů (hráčů).</p>
-<h2>FailRP</h2>
-<p>Jakékoliv porušení stanovených pravidel a výrazné narušení RP akce.</p>
-<h2>NonRP Injuries</h2>
-<p>Úmyslné vypouštění RP zranění, které by v běžném životě vyžadovalo lékařské ošetření.</p>
-<h2>NonRP Driving</h2>
-<p>Nereálné ovládání vozidla, která by v rámci reálného života nebyla možná. Jízda sportovním vozidlem na nezpevněném povrchu maximální rychlosti. Pád vozidla z výšky (nereflektování reálného DMG vozidla) a jízda dál. V rámci ujíždění PD nemusíte zcela RPit každý menší náraz, nicméně větší nehody se musí plnohodnotně RPit ihned nikoliv po RP akci.</p>
-<h2>FearRP</h2>
-<p>Simulace strachu - chování dle reálné situace. Druhy fearu: JailFear, CopFear, Jobfear, HoodFear, GunFear, DogFear.</p>
-<h2>AssPulling</h2>
-<p>Vytahování dlouhých zbraní a velkých předmětů z neznáma (zadní část herní postavy) - toto jednání je považováno za Powergaming.</p>
-<h2>CPZ</h2>
-<p>Tímto pravidlem se omezuje maximální doba, kterou může být suspect držený v cele předběžného zadržení na PD/SD stanici. Doba je stanovena na 1 hodinu od zadržení (ale v krajním případě může dojít k dohodě v OOC chatu).</p>
-<h2>Stream sniping</h2>
-<p>Využívání informací, které získáme skrze stream přítomného hráče na serveru. Úmyslné vyhledávání hráče, který sdílí svou polohu skrze živé vysílání. Ovlivňování hráčů skrze stream • případné nabádání k ovlivnění vývoje celé RP akce, v případě, kdy dotyčný hráč není fyzicky přítomen ve hře.</p>
-<h2>LOOTING</h2>
-<p>Toto pravidlo umožňuje hráčům okrádat jiné hráče přímo z inventáře. Není však možné okrádat lidi o majetek nebo věci, které nemá v inventáři. Toto pravidlo přísně zakazuje okrádat členy státních složek (ON DUTY) o věci v inventáři, kromě peněz, jídla, vest, nábojů a vlastních zabavených věcí (ty sám osobně), neexistuje žádná jiná výjimka.</p>
-<br><br>
-<h2>N - WORD</h2>
-<p>Je přísně zakázané používaní rasových, netnických nebo rasovích ufážak kromě členů Gangu (stejně toto pravidlo platí i na hlavním DC, i na všech frakčních DC).</p>
-<h2>NVL (not valuing your life)</h2>
-<p>Jde o pravidlo, které přikazuje všem hráčům vážit si svého RP života jak v reálném životě tak i života druhých hráčů.</p>
-<h2>CombatLog</h2>
-<p>Odpojení z probíhající RP akce bez udání důvodu za účelem obcházení trestu nebo vyhýbání se následkům. Hráči se nesmí odpojovat mimo nemovitost vlastněnou prostřednictvím inkasa (pronájmu). Toto pravidlo se nevztahuje na situace, kdy dochází k restartu serveru.</p>
-<h2>Combat comeback</h2>
-<p>Je zakázáno navrácení do probíhající RP akce, které se dotyčný hráč zúčastnil a byl v ní postřelen ("death screen"). Veškerá zranění vyžadují ošetření a následnou rekonvalescenci (= "období mezi vymizením příznaků nemoci/zranění a úplným uzdravením"). Převedením do herního světa je to doba, potřebná k dokončení probíhající RP akce, které se dotyčný hráč zúčastnil a byl při ní zraněn. Pravidlo platí pro všechny hráče!!</p>
-<h2>PowerGaming</h2>
-<p>Provádění nereálných úkonů a schopností, které v běžném životě nelze vykonat. Je zakázáno erpit GPS lokátory a sdílet svou polohu na DC.</p>
-<h2>COP BAITING</h2>
-<p>Toto pravidlo zakazuje provokovat jakékoli členy státních složek bez pádného RP důvodu.</p>
-<h2>PK (player kill)</h2>
-<p>Na našem serveru se pravidlo PK nenachází. Máte však možnost toto pravidlo provést v rámci RP.</p>
-<h2>CK (Character Kill)</h2>
-<p>Pádný důvod: K provedení CK (Character Kill) musí existovat pádný důvod a celé CK musí být odehráno v rámci řádného RP. CK nelze udělit například z důvodu, že má postava příliš mnoho pokut. Druhy CK: JailCK, BossCK, SituačníCK, CK, SelfCK.</p>
-<h2>Gross</h2>
-<p>Rasismus, pedofilie, řezání jednotlivých končetin a další nechutné prvky. Tento styl RP je možné provádět pouze po odsouhlasení od všech účastníků RP akce. Pokud se k již probíhajícímu Grossu připojí jakýkoliv další hráč, je nutné tuto akci pozastavit a vyžádat si jeho souhlas - pokud hráč neposkytne souhlas, musí být tato akce okamžitě ukončena! Jakákoliv osoba, která se zúčastní GrossRP, může kdykoliv svůj souhlas odvolat, pokud se dané akce nechce nadále účastnit. Je zakázáno vytvářet lidem trvalé následky (řezání končetin a jiných částí těla), pokud dotyčné osobě nebude uděleno CK! V případě následného udělení CK dotyčnému hráči, vzniká pro toto pravidlo výjimka. Výjimkou pro toto pravidlo je také způsobení poškození jednotlivých částí těla (pořezání a následné jizvy), které nejsou běžně viditelné, protože jsou skryté některou z částí oblečení.</p>
-<h2>iGross</h2>
-<p>Toto pravidlo se vztahuje na postavy, které mají nějakou spojitost s nelegálními aktivitami, ať už jsou členy schválených nebo neschválených skupin. Pokud jste postavou s takovou spojitostí a odchytí vás konkurenční nelegální skupina, automaticky je povolený Gross. V případě, že se vám Gross zdá příliš drsný, můžete požádat o zmírnění Grossu (ne o zrušení), protistrana tak musí učinit.</p>
-<h2>sGross (starý - SexRP)</h2>
-<p>Jedná se o styl Grossu, který se zaměřuje speciálně na sexuální aktivity. Je nutné se na něj ptát zvlášť, povolení Grossu samotného nepovolí tento a naopak.</p>
-<h2>Multichar</h2>
-<p>Vlastníkem frakce můžete být pouze na jedné postavě současně. Je zakázáno mít jednu postavu ve více státních složkách najednou. Nelze být zároveň členem jedné frakce/skupiny na různých postavách. Toto pravidlo platí i pro nelegální skupiny. Je zakázáno jakkoliv převádět věci mezi postavami. Vaše současné a předchozí postavy nesmí být jakkoliv příbuzné. Vytváření nesmyslných jmen, jako například "Denis Neerpil" nebo "Inju Reas", je zakázáno.</p>
-<h2>Passive</h2>
-<p>V herním světě neexistují pouze hráči, kteří jsou v připojeni na serveru, ale nachází se zde taky mnoho dalších "místních" lidí. Toto pravidlo platí po celé herní mapě. Je třeba brát v potaz teoretické zalidnění dané oblasti → pohybují se okolo Vás lidi. Obvyklé oblasti s větším počtem lidí jsou zpravidla: Nemocnice, LSPD/LSSD stanice, Obchody, Náměstí, parky a veřejná prostranství. Nesmíte využít Passive ve svůj prospěch. Pro členy gangu se toto pravidlo mírně upravuje.</p>
-<h2>Pravidlo Inventáře</h2>
-<p>Veškeré předměty, které máte v momentální chvíli u sebe (v inventáři), máte u sebe. Ke schování jakéhokoliv předmětu nelze využít prostředek, který není mechanikou hry.</p>
-<h2>Pravidla pro nelegální činnosti a skupiny</h2>
-<p>Pravidla vztahující se výhradně na skupinky lidí i jednotlivce, kteří jsou spojeni s nelegálními činnostmi.</p>
-<h2>Frakce a skupiny Počet členů</h2>
-<p>Jedna skupina/firma může mít maximálně 15 členů celkem. Toto pravidlo platí pro všechny skupiny, ať už se jedná o legální nebo nelegální. Pro schválené nelegální skupiny je možnost zažádat o navýšení maximálního počtu členů. Žádost o navýšení je nutné podat prostřednictvím ticketu na nelegálním DC. O schválení či zamítnutí rozhoduje vedení serveru a nemusí být automaticky schváleno. Toto pravidlo se nevztahuje na státní složky. Obecně: Každý člen skupiny/firmy je povinen být součástí frakčního/skupinového Discordu.</p>
-<h2>Water evading</h2>
-<p>Unikání státním složkám plaváním (skočíte do vody a začnete plavat co nejdál od břehu) či na vodním skútru na otevřený oceán (nevztahuje se na rybníky, jezera, moře a řeky jako např. Alamo Sea).</p>
-<h2>Pravidlo huntingu</h2>
-<p>Na lov lze použít pouze zbraně k tomu určené: sniper rifle, hunting rifle a mušketa. Je zakázáno využívat mechaniky spawnování zvířat ve všech oblastech k lovu určených. Účelové srážení zvěře a následné vykuchání není adekvátní RP, proto je to bráno jako porušení pravidel.</p>
-<h2>Peace time</h2>
-<p>Peace time může vždy vyhlásit pouze AT. Tento režim se vztahuje na celý server (pokud není určeno AT jinak). Vše, co se stalo v tomto režimu se nepočítá do RP a postava si nic nepamatuje.</p>
-<h2>Advertising</h2>
-<p>Je zakázáno propagovat jakékoliv jiné stránky / servery bez předchozí domluvy s vedením projektu.</p>
-<h2>Revenge kill</h2>
-<p>Hráč, který dostal PK, je po dobu 24 hodin reálného času považován za zraněného a neschopného se mstít. Pokud bude vystaven situaci z opačné strany, má povoleno se bránit, ale nesmí podnikat iniciativní kroky proti straně, jenž jej poškodila. Pokud je postava schopna se po zotavení mstít, vždy by této situaci mělo předcházet RP, během kterého se hráč snaží nejdříve se svým sokem navázat nějaký kontakt, tzn. pomsta nikdy nesmí proběhnout jako KOS. Nevztahuje se na pěstní souboje v rámci eventových či přátelských soubojů a nelegálních přijímacích rituálů v rámci skupiny.</p>
-<h2>Krádeže vozidel</h2>
-<p>Zákaz krádeže NPC i hráčských vozidel hlavně státních složek bez adekvátního RP důvodu. Příklady odpovídají majících důvodů pro krádež: za účelem VK, za účelem použití vozidla pro nelegální činnost (loupež, únos atd.).</p>
-<h2>Vozidla</h2>
-<p>Pokud se hráč rozhodl ukradnout PD auto, je nutno nepodmínečně kontaktovat admina pomocí /report a musí s tímto autem být zacházeno jako s nonstop viditelným autem v PD systému (trackovatelné), popřípadě důkladně zaRPit vyjmutí tracking systému. Střelba běžnými ručními zbraněmi z vrtulníku je zakázána. Využívání vozidla k úmyslnému srážení hráčů (lidí, psů, aj...), a to i při přestřelce, je zakázáno.</p>
-<h2>Zbraně</h2>
-<p>Sniper rifle, hunting rifle a mušketa jsou určeny pouze na lov zvěři - použití těchto zbraní na PVP je povoleno pouze v případě obrany při lovu. Na jakýkoliv jiný druh PVP je zakázáno. Zákaz nošení tlumičů na brokovnicích. Je zakázáno používat zbraně jako airsoftové, paintballové nebo plynové, případně jako nefunkční zbraně, doplňky k oblečení, šperky a jiné. Nevztahuje se na výcviky státních složek.</p>
-<h2>Velké zbraně</h2>
-<p>(některé brokovnice, některé SMG, AR..) je nutné přiznat pomocí /me a /do, pokud je nemají v rukou. Jestliže tak nebude učiněno a hráč vytáhne velkou zbraň, bude se jednat o asspulling. Příklady:<br>"/me bere zbraň z auta a schovává si ji pod bundu".<br>"/do pod bundou jde vidět obrys zbraně a kus pažby čouhá vpravo ze spodní části bundy".<br>"/do zbraň je zavěšená na popruhu na zádech".</p>
-<h2>Bushcamping</h2>
-<p>Je zakázáno schovávat se v jakýchkoliv keřích, a tím zneužívat 3 osoby, během přepadení či útěku.</p>
-<h2>Bugs</h2>
-<p>Hráč je povinen RPit každý bug, který ho nezvýhodní! Také je povinný nahlásit jakékoliv bugy, které na serveru najde.</p>
-<h2>Poznávání osob</h2>
-<p>Nelze poznat jakoukoliv osobu po krátké RP akci (například: Traffic stop s PD, aj.).<br>Nelze poznat postavu podle hlasu, vzhledu, tetování či oblečení. Abyste osobu poznali musíte s ní mít dlouhodobější interakci.<br>Mezi dlouhodobější interakci se považuje kolegiální vztah, přátelství, příbuzenský vztah.<br>Osobu můžete poznat pomoci /do (neplatí pro hráče s dlouhodobou interakci).</p>
-<a class="back-btn" href="index.html">⬅️ Zpět na hlavní stránku</a>
-</div>
+
+    <div class="container">
+                <button class="back-btn" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i> Zpět
+        </button>
+        
+        <h1>📜 PRAVIDLA SERVERU</h1> 
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-box" id="searchInput" placeholder="Vyhledat pravidlo...">
+        </div>
+         
+        <div class="rule-item">
+            <h2>RP (Roleplay)</h2>
+            <p>Hraní za fiktivní postavu ve smyšleném herním světě. Reagujeme na situace tak, jako v běžném životě.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>OOC (Out Of Character)</h2>
+            <p>Komunikace mezi hráči mimo roleplay. Informace získané mimo herní svět RP nelze využít v IC (Metagaming).</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Command /me</h2>
+            <p>Popisuje aktivitu postavy, nahrazuje animace, které nelze vykonat pomocí herní mechaniky.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Command /do</h2>
+            <p>Popisuje vykonanou aktivitu, přičemž je očekávána reakce jiného hráče. V /do nesdílíme své myšlenky a pocity. V tomto commandu je zakázáno lhát!</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Lokální chat</h2>
+            <p>(OOC chat ve hře) Lokální chat, který se nachází přímo ve hře slouží výhradně pro sdělení důležitých informací- neslouží ke komunikaci a nadávkám! Na lokální chat se také vztahují komunitní pravidla.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Metagaming</h2>
+            <p>Zneužití informací, které získáme mimo herní svět (OOC), přičemž tyto informace následně využijeme za postavu v herním světě (IC). - Je zakázáno využívat informace, které vaše postava neví a nemá se k nim jak dostat (např. využití informací po CK). - Je zakázáno přenášet informace mezi postavami (v rámci multicharu), jedná se o porušení pravidel, které je trestáno banem - metagaming!</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Mixing</h2>
+            <p>Vzájemné přenášení slovních spojení, sdělení, pocitů a nálad mezi OOC a IC. - Toto přenášení informací může mít různou podobu - písemnou/slovní. - Je přísně zakázáno používat nevhodná slova a výrazy, které narušují herní atmosféru nebo nejsou v souladu s IC prostředím, jako například "upocenej", "lolíček", "nepoť to" a podobné. Tyto výrazy jsou považovány za mixing a jejich užívání může vést k postihům.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>KOS (Kill on sight)</h2>
+            <p>Toto pravidlo zakazuje zabití jakéhokoli hráče, bez pádného RP důvodu a předešlé RP interakce.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>VDM (Vehicle Deathmatch)</h2>
+            <p>Úmyslné narážení do okolních vozidel a objektů (hráčů).</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>FailRP</h2>
+            <p>Jakékoliv porušení stanovených pravidel a výrazné narušení RP akce.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>NonRP Injuries</h2>
+            <p>Úmyslné vypouštění RP zranění, které by v běžném životě vyžadovalo lékařské ošetření.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>NonRP Driving</h2>
+            <p>Nereálné ovládání vozidla, která by v rámci reálného života nebyla možná. Jízda sportovním vozidlem na nezpevněném povrchu maximální rychlosti. Pád vozidla z výšky (nereflektování reálného DMG vozidla) a jízda dál. V rámci ujíždění PD nemusíte zcela RPit každý menší náraz, nicméně větší nehody se musí plnohodnotně RPit ihned nikoliv po RP akci.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>FearRP</h2>
+            <p>Simulace strachu - chování dle reálné situace. Druhy fearu: JailFear, CopFear, Jobfear, HoodFear, GunFear, DogFear.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>AssPulling</h2>
+            <p>Vytahování dlouhých zbraní a velkých předmětů z neznáma (zadní část herní postavy) - toto jednání je považováno za Powergaming.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>CPZ</h2>
+            <p>Tímto pravidlem se omezuje maximální doba, kterou může být suspect držený v cele předběžného zadržení na PD/SD stanici. Doba je stanovena na 1 hodinu od zadržení (ale v krajním případě může dojít k dohodě v OOC chatu).</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Stream sniping</h2>
+            <p>Využívání informací, které získáme skrze stream přítomného hráče na serveru. Úmyslné vyhledávání hráče, který sdílí svou polohu skrze živé vysílání. Ovlivňování hráčů skrze stream • případné nabádání k ovlivnění vývoje celé RP akce, v případě, kdy dotyčný hráč není fyzicky přítomen ve hře.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>LOOTING</h2>
+            <p>Toto pravidlo umožňuje hráčům okrádat jiné hráče přímo z inventáře. Není však možné okrádat lidi o majetek nebo věci, které nemá v inventáři. Toto pravidlo přísně zakazuje okrádat členy státních složek (ON DUTY) o věci v inventáři, kromě peněz, jídla, vest, nábojů a vlastních zabavených věcí (ty sám osobně), neexistuje žádná jiná výjimka.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>N - WORD</h2>
+            <p>Je přísně zakázané používaní rasových, netnických nebo rasovích ufážak kromě členů Gangu (stejně toto pravidlo platí i na hlavním DC, i na všech frakčních DC).</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>NVL (not valuing your life)</h2>
+            <p>Jde o pravidlo, které přikazuje všem hráčům vážit si svého RP života jak v reálném životě tak i života druhých hráčů.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>CombatLog</h2>
+            <p>Odpojení z probíhající RP akce bez udání důvodu za účelem obcházení trestu nebo vyhýbání se následkům. Hráči se nesmí odpojovat mimo nemovitost vlastněnou prostřednictvím inkasa (pronájmu). Toto pravidlo se nevztahuje na situace, kdy dochází k restartu serveru.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Combat comeback</h2>
+            <p>Je zakázáno navrácení do probíhající RP akce, které se dotyčný hráč zúčastnil a byl v ní postřelen ("death screen"). Veškerá zranění vyžadují ošetření a následnou rekonvalescenci (= "období mezi vymizením příznaků nemoci/zranění a úplným uzdravením"). Převedením do herního světa je to doba, potřebná k dokončení probíhající RP akce, které se dotyčný hráč zúčastnil a byl při ní zraněn. Pravidlo platí pro všechny hráče!!</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>PowerGaming</h2>
+            <p>Provádění nereálných úkonů a schopností, které v běžném životě nelze vykonat. Je zakázáno erpit GPS lokátory a sdílet svou polohu na DC.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>COP BAITING</h2>
+            <p>Toto pravidlo zakazuje provokovat jakékoli členy státních složek bez pádného RP důvodu.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>PK (player kill)</h2>
+            <p>Na našem serveru se pravidlo PK nenachází. Máte však možnost toto pravidlo provést v rámci RP.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>CK (Character Kill)</h2>
+            <p>Pádný důvod: K provedení CK (Character Kill) musí existovat pádný důvod a celé CK musí být odehráno v rámci řádného RP. CK nelze udělit například z důvodu, že má postava příliš mnoho pokut. Druhy CK: JailCK, BossCK, SituačníCK, CK, SelfCK.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Gross</h2>
+            <p>Rasismus, pedofilie, řezání jednotlivých končetin a další nechutné prvky. Tento styl RP je možné provádět pouze po odsouhlasení od všech účastníků RP akce. Pokud se k již probíhajícímu Grossu připojí jakýkoliv další hráč, je nutné tuto akci pozastavit a vyžádat si jeho souhlas - pokud hráč neposkytne souhlas, musí být tato akce okamžitě ukončena! Jakákoliv osoba, která se zúčastní GrossRP, může kdykoliv svůj souhlas odvolat, pokud se dané akce nechce nadále účastnit. Je zakázáno vytvářet lidem trvalé následky (řezání končetin a jiných částí těla), pokud dotyčné osobě nebude uděleno CK! V případě následného udělení CK dotyčnému hráči, vzniká pro toto pravidlo výjimka. Výjimkou pro toto pravidlo je také způsobení poškození jednotlivých částí těla (pořezání a následné jizvy), které nejsou běžně viditelné, protože jsou skryté některou z částí oblečení.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>iGross</h2>
+            <p>Toto pravidlo se vztahuje na postavy, které mají nějakou spojitost s nelegálními aktivitami, ať už jsou členy schválených nebo neschválených skupin. Pokud jste postavou s takovou spojitostí a odchytí vás konkurenční nelegální skupina, automaticky je povolený Gross. V případě, že se vám Gross zdá příliš drsný, můžete požádat o zmírnění Grossu (ne o zrušení), protistrana tak musí učinit.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>sGross (starý - SexRP)</h2>
+            <p>Jedná se o styl Grossu, který se zaměřuje speciálně na sexuální aktivity. Je nutné se na něj ptát zvlášť, povolení Grossu samotného nepovolí tento a naopak.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Multichar</h2>
+            <p>Vlastníkem frakce můžete být pouze na jedné postavě současně. Je zakázáno mít jednu postavu ve více státních složkách najednou. Nelze být zároveň členem jedné frakce/skupiny na různých postavách. Toto pravidlo platí i pro nelegální skupiny. Je zakázáno jakkoliv převádět věci mezi postavami. Vaše současné a předchozí postavy nesmí být jakkoliv příbuzné. Vytváření nesmyslných jmen, jako například "Denis Neerpil" nebo "Inju Reas", je zakázáno.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Passive</h2>
+            <p>V herním světě neexistují pouze hráči, kteří jsou v připojeni na serveru, ale nachází se zde taky mnoho dalších "místních" lidí. Toto pravidlo platí po celé herní mapě. Je třeba brát v potaz teoretické zalidnění dané oblasti → pohybují se okolo Vás lidi. Obvyklé oblasti s větším počtem lidí jsou zpravidla: Nemocnice, LSPD/LSSD stanice, Obchody, Náměstí, parky a veřejná prostranství. Nesmíte využít Passive ve svůj prospěch. Pro členy gangu se toto pravidlo mírně upravuje.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Pravidlo Inventáře</h2>
+            <p>Veškeré předměty, které máte v momentální chvíli u sebe (v inventáři), máte u sebe. Ke schování jakéhokoliv předmětu nelze využít prostředek, který není mechanikou hry.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Pravidla pro nelegální činnosti a skupiny</h2>
+            <p>Pravidla vztahující se výhradně na skupinky lidí i jednotlivce, kteří jsou spojeni s nelegálními činnosti.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Frakce a skupiny Počet členů</h2>
+            <p>Jedna skupina/firma může mít maximálně 15 členů celkem. Toto pravidlo platí pro všechny skupiny, ať už se jedná o legální nebo nelegální. Pro schválené nelegální skupiny je možnost zažádat o navýšení maximálního počtu členů. Žádost o navýšení je nutné podat prostřednictvím ticketu na nelegálním DC. O schválení či zamítnutí rozhoduje vedení serveru a nemusí být automaticky schváleno. Toto pravidlo se nevztahuje na státní složky. Obecně: Každý člen skupiny/firmy je povinen být součástí frakčního/skupinového Discordu.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Water evading</h2>
+            <p>Unikání státním složkám plaváním (skočíte do vody a začnete plavat co nejdál od břehu) či na vodním skútru na otevřený oceán (nevztahuje se na rybníky, jezera, moře a řeky jako např. Alamo Sea).</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Pravidlo huntingu</h2>
+            <p>Na lov lze použít pouze zbraně k tomu určené: sniper rifle, hunting rifle a mušketa. Je zakázáno využívat mechaniky spawnování zvířat ve všech oblastech k lovu určených. Účelové srážení zvěře a následné vykuchání není adekvátní RP, proto je to bráno jako porušení pravidel.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Peace time</h2>
+            <p>Peace time může vždy vyhlásit pouze AT. Tento režim se vztahuje na celý server (pokud není určeno AT jinak). Vše, co se stalo v tomto režimu se nepočítá do RP a postava si nic nepamatuje.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Advertising</h2>
+            <p>Je zakázáno propagovat jakékoliv jiné stránky / servery bez předchozí domluvy s vedením projektu.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Revenge kill</h2>
+            <p>Hráč, který dostal PK, je po dobu 24 hodin reálného času považován za zraněného a neschopného se mstít. Pokud bude vystaven situaci z opačné strany, má povoleno se bránit, pero nesmí podnikat iniciativní kroky proti straně, jenž jej poškodila. Pokud je postava schopna se po zotavení mstít, vždy by této situaci mělo předcházet RP, během kterého se hráč snaží nejdříve se svým sokem navázat nějaký kontakt, tzn. pomsta nikdy nesmí proběhnout jako KOS. Nevztahuje se na pěstní souboje v rámci eventových či přátelských soubojů a nelegálních přijímacích rituálů v rámci skupiny.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Krádeže vozidel</h2>
+            <p>Zákaz krádeže NPC i hráčských vozidel hlavně státních složek bez adekvátního RP důvodu. Příklady odpovídají majících důvodů pro krádež: za účelem VK, za účelem použití vozidla pro nelegální činnost (loupež, únos atd.).</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Vozidla</h2>
+            <p>Pokud se hráč rozhodl ukradnout PD auto, je nutno nepodmínečně kontaktovat admina pomocí /report a musí s tímto autem být zacházeno jako s nonstop viditelným autem v PD systému (trackovatelné), popřípadě důkladně zaRPit vyjmutí tracking systému. Střelka běžnými ručními zbraněmi z vrtulníku je zakázána. Využívání vozidla k úmyslnému srážení hráčů (lidí, psů, aj...), a to i při přestřelce, je zakázáno.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Zbraně</h2>
+            <p>Sniper rifle, hunting rifle a mušketa jsou určeny pouze na lov zvěři - použití těchto zbraní na PVP je povoleno pouze v případě obrany při lovu. Na jakýkoliv jiný druh PVP je zakázáno. Zákaz nošení tlumičů na brokovnicích. Je zakázáno používat zbraně jako airsoftové, paintballové nebo plynové, případně jako nefunkční zbraně, doplňky k oblečení, šperky a jiné. Nevztahuje se na výcviky státních složek.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Velké zbraně</h2>
+            <p>(některé brokovnice, některé SMG, AR..) je nutné přiznat pomocí /me a /do, pokud je nemají v rukou. Jestliže tak nebude učiněno a hráč vytáhne velkou zbraň, bude se jednat o asspulling. Příklady:<br>"/me bere zbraň z auta a schovává si ji pod bundu".<br>"/do pod bundou jde vidět obrys zbraně a kus pažby čouhá vpravo ze spodní části bundy".<br>"/do zbraň je zavěšená na popruhu na zádech".</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Bushcamping</h2>
+            <p>Je zakázáno schovávat se v jakýchkoliv keřích, a tím zneužívat 3 osoby, během přepadení či útěku.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Bugs</h2>
+            <p>Hráč je povinen RPit každý bug, který ho nezvýhodní! Také je povinný nahlásit jakékoliv bugy, které na serveru najde.</p>
+        </div>
+        
+        <div class="rule-item">
+            <h2>Poznávání osob</h2>
+            <p>Nelze poznat jakoukoliv osobu po krátké RP akci (například: Traffic stop s PD, aj.).<br>Nelze poznat postavu podle hlasu, vzhledu, tetování či oblečení. Abyste osobu poznali musíte s ní mít dlouhodobější interakci.<br>Mezi dlouhodobější interakci se považuje kolegiální vztah, přátelství, příbuzenský vztah.<br>Osobu můžete poznat pomoci /do (neplatí pro hráče s dlouhodobou interakci).</p>
+        </div>
+    </div>
+
+<script>
+    function goBack() {
+        // Simulace návratu na hlavní stránku
+        alert('Návrat na hlavní stránku...');
+        // window.location.href = 'index.html';
+    }
+
+    // Funkce pro vyhledávání
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase().trim();
+        const headings = document.querySelectorAll('h2');
+        const paragraphs = document.querySelectorAll('p');
+        
+        // Odstranění předchozího zvýraznění
+        headings.forEach(heading => {
+            heading.innerHTML = heading.textContent;
+        });
+        
+        paragraphs.forEach(paragraph => {
+            paragraph.innerHTML = paragraph.textContent;
+        });
+        
+        // Pokud je vyhledávací termín prázdný, skončíme
+        if (searchTerm === '') return;
+        
+        // Procházení nadpisů a odstavců
+        let firstMatch = null;
+        
+        headings.forEach((heading, index) => {
+            const text = heading.textContent.toLowerCase();
+            if (text.includes(searchTerm)) {
+                const regex = new RegExp(`(${searchTerm})`, 'gi');
+                heading.innerHTML = heading.textContent.replace(regex, '<span class="highlight">$1</span>');
+                
+                // Zvýraznění odpovídajícího odstavce
+                if (paragraphs[index]) {
+                    paragraphs[index].innerHTML = paragraphs[index].textContent.replace(regex, '<span class="highlight">$1</span>');
+                }
+                
+                // Uložení prvního nalezeného nadpisu pro scrollování
+                if (!firstMatch) {
+                    firstMatch = heading;
+                }
+            }
+        });
+        
+        // Scrollování k prvnímu nalezenému nadpisu
+        if (firstMatch) {
+            firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    });
+</script>
 </body>
 </html>

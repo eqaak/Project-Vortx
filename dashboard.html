@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>deshboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body {
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), 
+                        url('https://images.unsplash.com/photo-1519791883288-dc8bd696e667?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color:white;
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            padding:20px;
+        }
+        .dashboard-container {
+            width:100%;
+            max-width:1000px;
+            background:rgba(10,10,10,0.9);
+            border-radius:15px;
+            padding:30px;
+            box-shadow:0 0 30px rgba(0,100,200,0.3);
+            border:1px solid rgba(100,150,255,0.2);
+            margin-top: 20px;
+            position: relative;
+        }
+        .back-btn {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background: rgba(74, 142, 255, 0.2);
+            border: none;
+            color: #4a8eff;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.3s;
+            font-size: 0.9rem;
+        }
+        .back-btn:hover {
+            background: rgba(74, 142, 255, 0.3);
+        }
+        .user-profile {
+            display:flex;
+            align-items:center;
+            margin-bottom:20px;
+            padding:15px;
+            background: rgba(0,0,0,0.3);
+            border-radius:10px;
+            margin-top: 40px;
+        }
+        .user-avatar { width:60px; height:60px; border-radius:50%; margin-right:15px; border:2px solid #4a8eff; }
+        .user-info { flex:1; }
+        .user-name { font-size:1.2rem; font-weight:600; margin-bottom:5px; }
+        .user-discriminator { color:#aaa; font-size:0.9rem; }
+        .logout-btn {
+            background: rgba(231,76,60,0.2);
+            border:none;
+            color:#e74c3c;
+            padding:5px 10px;
+            border-radius:5px;
+            cursor:pointer;
+        }
+        .logout-btn:hover { background: rgba(231,76,60,0.3);}
+        .info-box { margin-bottom:20px; padding:15px; background:rgba(0,0,0,0.3); border-radius:10px; border-left:4px solid #2a5298; }
+        .info-title { font-size:1rem; color:#aaa; margin-bottom:8px; }
+        .character-list, .vehicle-list, .inventory-grid { max-height:300px; overflow-y:auto; }
+        .character-item, .vehicle-item, .inventory-item { display:flex; align-items:center; padding:10px; background:rgba(255,255,255,0.05); border-radius:8px; margin-bottom:8px; }
+        .character-avatar { width:40px; height:40px; border-radius:50%; background:#2a5298; display:flex; align-items:center; justify-content:center; margin-right:12px; font-weight:bold; }
+        .inventory-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(80px,1fr)); gap:10px; }
+        .inventory-item { flex-direction:column; text-align:center; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Tlačítko zpět uvnitř kontejneru -->
+        <button class="back-btn" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i> Zpět
+        </button>
+
+        <h1 style="text-align:center; margin-bottom:20px;">TVŮJ DASHBOARD</h1>
+
+        <div class="user-profile">
+            <img src="https://cdn.discordapp.com/embed/avatars/0.png" class="user-avatar" id="user-avatar">
+            <div class="user-info">
+                <div class="user-name" id="user-name">CzechPlayer</div>
+                
+            </div>
+            <button class="logout-btn" onclick="logout()">Odhlásit</button>
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">TVÉ POSTAVY</div>
+            <div class="character-list" id="character-list"></div>
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">VLASTNĚNÁ VOZIDLA</div>
+            <div class="vehicle-list" id="vehicle-list"></div>
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">INVENTÁŘ</div>
+            <div class="inventory-grid" id="inventory-grid"></div>
+        </div>
+    </div>
+
+    <script>
+        // Simulace dat
+        const characters = [
+            { name: "Jan Novák", birth: "12.03.1990" },
+            { name: "Petr Svoboda", birth: "25.07.1985" },
+            { name: "Tomáš Král", birth: "03.11.2000" }
+        ];
+        const vehicles = [
+            { name: "BMW M5", plate: "7A8 1234" },
+            { name: "Audi RS6", plate: "3B5 6789" },
+            { name: "Porsche 911", plate: "2C4 1011" }
+        ];
+        const inventory = [
+            { name: "Peníze", amount: "$125,000" },
+            { name: "Telefon", amount: "1" },
+            { name: "Zbraně", amount: "2" },
+            { name: "Jídlo", amount: "5" },
+            { name: "Léky", amount: "3" },
+            { name: "Nástroje", amount: "4" }
+        ];
+
+        // Naplnění seznamů postav
+        const charList = document.getElementById('character-list');
+        characters.forEach(c => {
+            const div = document.createElement('div');
+            div.className = 'character-item';
+            const initial = c.name.charAt(0).toUpperCase();
+            div.innerHTML = `<div class="character-avatar">${initial}</div><div>${c.name}</div><div style="margin-left:auto;color:#aaa;">${c.birth}</div>`;
+            charList.appendChild(div);
+        });
+
+        // Naplnění vozidel
+        const vehList = document.getElementById('vehicle-list');
+        vehicles.forEach(v => {
+            const div = document.createElement('div');
+            div.className = 'vehicle-item';
+            div.innerHTML = `<div style="margin-right:12px;"><i class="fas fa-car" style="color:#4a8eff;"></i></div><div>${v.name}</div><div style="margin-left:auto;color:#aaa;">${v.plate}</div>`;
+            vehList.appendChild(div);
+        });
+
+        // Naplnění inventáře
+        const invGrid = document.getElementById('inventory-grid');
+        inventory.forEach(i => {
+            const div = document.createElement('div');
+            div.className = 'inventory-item';
+            div.innerHTML = `<div>${i.name}</div><div style="color:#4a8eff;">${i.amount}</div>`;
+            invGrid.appendChild(div);
+        });
+
+        function logout() {
+            alert('Odhlášeno! Stránku znovu načti pro simulaci přihlášení.');
+        }
+
+        function goBack() {
+            alert('Návrat na hlavní stránku...');
+            // Zde by byl přesměrování na hlavní stránku, např.:
+            // window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
