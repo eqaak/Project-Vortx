@@ -130,28 +130,76 @@
     </div>
 
     <script>
+        // Funkce pro odhlášení s vymazáním session
         function logout() {
             if (confirm('Opravdu se chcete odhlásit?')) {
-                // Přesměrování na hlavní stránku projektu
-                window.location.href = 'https://protjectvortex.netlify.app';
+                // Vymazat localStorage/sessionStorage
+                localStorage.removeItem('userToken');
+                localStorage.removeItem('userData');
+                sessionStorage.clear();
+                
+                // Vymazat cookies
+                document.cookie.split(";").forEach(function(c) {
+                    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+                });
+                
+                // Přesměrování na hlavní stránku s parametrem pro potvrzení odhlášení
+                window.location.href = 'https://protjectvortex.netlify.app?logout=success';
             }
         }
 
+        // Funkce pro návrat na hlavní stránku
         function goBack() {
             if (confirm('Chcete se vrátit na hlavní stránku?')) {
-                // Přesměrování na hlavní stránku projektu
                 window.location.href = 'https://protjectvortex.netlify.app';
             }
         }
 
+        // Kontrola, zda je uživatel přihlášen (základní ochrana)
+        function checkAuth() {
+            const token = localStorage.getItem('userToken');
+            if (!token) {
+                alert('Nejste přihlášen! Přesměrování na hlavní stránku...');
+                window.location.href = 'https://protjectvortex.netlify.app';
+                return false;
+            }
+            return true;
+        }
+
+        // Kontrola při načtení stránky
+        document.addEventListener('DOMContentLoaded', function() {
+            // Pro testování můžeš zakomentovat následující řádek:
+            // checkAuth();
+            
+            // Načíst uživatelská data pokud existují
+            const userData = localStorage.getItem('userData');
+            if (userData) {
+                try {
+                    const data = JSON.parse(userData);
+                    document.querySelector('.user-name').textContent = data.name || 'Uživatel';
+                    document.querySelector('.user-discriminator').textContent = data.discriminator || '#0000';
+                } catch (e) {
+                    console.error('Chyba při načítání uživatelských dat');
+                }
+            }
+        });
+
+        // Klávesové zkratky
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 goBack();
             }
             if (event.ctrlKey && event.key === 'q') {
+                event.preventDefault();
                 logout();
             }
         });
+
+        // Zabránit návratu zpět po odhlášení
+        window.history.pushState(null, null, window.location.href);
+        window.onpopstate = function() {
+            window.history.go(1);
+        };
     </script>
 </body>
 </html>
