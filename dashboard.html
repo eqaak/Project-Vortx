@@ -90,7 +90,6 @@
 </head>
 <body>
     <div class="dashboard-container">
-        <!-- Hlavička s tlačítkem zpět a nadpisem -->
         <div class="header">
             <button class="back-btn" onclick="goBack()">
                 <i class="fas fa-arrow-left"></i> Zpět na hlavní stránku
@@ -101,7 +100,7 @@
         <div class="user-profile">
             <img src="https://cdn.discordapp.com/embed/avatars/0.png" class="user-avatar" id="user-avatar">
             <div class="user-info">
-                <div class="user-name" id="user-name">CzechPlayer</div>
+                <div class="user-name" id="user-name">Uživatel</div>
             </div>
             <button class="logout-btn" onclick="logout()">
                 <i class="fas fa-sign-out-alt"></i> Odhlásit
@@ -133,25 +132,20 @@
     <script>
         function logout() {
             if (confirm('Opravdu se chcete odhlásit?')) {
-                // Přesměrování na login stránku
                 window.location.href = 'login.html';
             }
         }
 
         function goBack() {
             if (confirm('Chcete se vrátit na hlavní stránku?')) {
-                // Přesměrování na hlavní stránku
                 window.location.href = 'index.html';
             }
         }
 
-        // Přidáme funkci pro klávesové zkratky
         document.addEventListener('keydown', function(event) {
-            // ESC pro návrat zpět
             if (event.key === 'Escape') {
                 goBack();
             }
-            // Ctrl+Q pro odhlášení
             if (event.ctrlKey && event.key === 'q') {
                 logout();
             }
