@@ -1,170 +1,172 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pravidla</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-body {
-    background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), 
-                url('https://images.unsplash.com/photo-1519791883288-dc8bd696e667?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
-    background-size: cover;
-    color:white;
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    padding:20px;
-}
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;
-    margin-bottom: 20px;
-    padding: 20px 30px;
-    background: rgba(10,10,10,0.9); 
-    border-radius: 10px; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
-    border:1px solid rgba(100,150,255,0.2);
-}
-.back-btn {
-    background: rgba(74, 142, 255, 0.2);
-    border: none;
-    color: #4a8eff;
-    padding: 12px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.3s ease;
-    font-size: 16px;
-    font-weight: 600;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    flex-shrink: 0;
-}
-.back-btn:hover {
-    background: rgba(74, 142, 255, 0.3);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-}
-.search-container {
-    display: flex;
-    align-items: center;
-    position: relative;
-    flex-shrink: 0;
-}
-.search-box {
-    background: rgba(30,30,40,0.9);
-    border: 1px solid rgba(100,150,255,0.3);
-    border-radius: 8px;
-    color: white;
-    padding: 12px 15px 12px 40px;
-    width: 300px;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-.search-box:focus {
-    outline: none;
-    border-color: #4a8eff;
-    box-shadow: 0 0 10px rgba(74, 142, 255, 0.5);
-    width: 350px;
-}
-.search-icon {
-    position: absolute;
-    left: 15px;
-    color: #4a8eff;
-    font-size: 18px;
-    z-index: 1;
-}
-.container { 
-    max-width: 1200px; 
-    margin: 0 auto; 
-    padding: 30px; 
-    background: rgba(10,10,10,0.9); 
-    border-radius: 10px; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
-    border:1px solid rgba(100,150,255,0.2);
-    width: 100%;
-}
-h1 {
-    font-size: 32px;
-    margin: 0;
-    text-align: center;
-    color: #fff;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    flex-grow: 1;
-}
-h2 { 
-    font-size: 22px; 
-    margin-top: 25px; 
-    color: #fff; 
-    text-transform: uppercase; 
-    border-left: 5px solid #007bff; 
-    padding-left: 12px; 
-    background: rgba(30,30,40,0.5);
-    padding: 10px 12px;
-    border-radius: 5px;
-}
-p { 
-    font-size: 16px; 
-    margin: 12px 0 20px 0; 
-    color: #ddd;
-    line-height: 1.6;
-    padding: 0 10px;
-}
-.highlight {
-    background-color: rgba(255, 215, 0, 0.3);
-    padding: 2px 4px;
-    border-radius: 3px;
-    font-weight: bold;
-    color: #ffd700;
-}
-.rule-item {
-    margin-bottom: 25px;
-    border-bottom: 1px solid rgba(100,150,255,0.1);
-    padding-bottom: 20px;
-}
-.rule-item:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pravidla</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body {
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), 
+                        url('https://images.unsplash.com/photo-1519791883288-dc8bd696e667?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color:white;
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            padding:20px;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 20px;
+            padding: 20px 30px;
+            background: rgba(10,10,10,0.9); 
+            border-radius: 10px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+            border:1px solid rgba(100,150,255,0.2);
+        }
+        .back-btn {
+            background: rgba(74, 142, 255, 0.2);
+            border: none;
+            color: #4a8eff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            flex-shrink: 0;
+        }
+        .back-btn:hover {
+            background: rgba(74, 142, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .search-box {
+            background: rgba(30,30,40,0.9);
+            border: 1px solid rgba(100,150,255,0.3);
+            border-radius: 8px;
+            color: white;
+            padding: 12px 15px 12px 40px;
+            width: 300px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .search-box:focus {
+            outline: none;
+            border-color: #4a8eff;
+            box-shadow: 0 0 10px rgba(74, 142, 255, 0.5);
+            width: 350px;
+        }
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            color: #4a8eff;
+            font-size: 18px;
+            z-index: 1;
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 30px; 
+            background: rgba(10,10,10,0.9); 
+            border-radius: 10px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+            border:1px solid rgba(100,150,255,0.2);
+            width: 100%;
+        }
+        h1 {
+            font-size: 32px;
+            margin: 0;
+            text-align: center;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            flex-grow: 1;
+        }
+        h2 { 
+            font-size: 22px; 
+            margin-top: 25px; 
+            color: #fff; 
+            text-transform: uppercase; 
+            border-left: 5px solid #007bff; 
+            padding-left: 12px; 
+            background: rgba(30,30,40,0.5);
+            padding: 10px 12px;
+            border-radius: 5px;
+        }
+        p { 
+            font-size: 16px; 
+            margin: 12px 0 20px 0; 
+            color: #ddd;
+            line-height: 1.6;
+            padding: 0 10px;
+        }
+        .highlight {
+            background-color: rgba(255, 215, 0, 0.3);
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        .rule-item {
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(100,150,255,0.1);
+            padding-bottom: 20px;
+        }
+        .rule-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
 
-/* Responzivní styly */
-@media (max-width: 768px) {
-    .header-container {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-    .search-box {
-        width: 100%;
-    }
-    .search-box:focus {
-        width: 100%;
-    }
-    h1 {
-        margin: 10px 0;
-    }
-}
-</style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        /* Responzivní styly */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            .search-box {
+                width: 100%;
+            }
+            .search-box:focus {
+                width: 100%;
+            }
+            h1 {
+                margin: 10px 0;
+            }
+        }
+    </style>
 </head>
 <body>
-
     <div class="container">
-                <button class="back-btn" onclick="goBack()">
-            <i class="fas fa-arrow-left"></i> Zpět
-        </button>
-        
-        <h1>📜 PRAVIDLA SERVERU</h1> 
-        <div class="search-container">
-            <i class="fas fa-search search-icon"></i>
-            <input type="text" class="search-box" id="searchInput" placeholder="Vyhledat pravidlo...">
+        <div class="header-container">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> Zpět
+            </button>
+            
+            <h1>📜 PRAVIDLA SERVERU</h1>
+            
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-box" id="searchInput" placeholder="Vyhledat pravidlo...">
+            </div>
         </div>
          
         <div class="rule-item">
@@ -393,57 +395,57 @@ p {
         </div>
     </div>
 
-<script>
-    function goBack() {
-        // Simulace návratu na hlavní stránku
-        alert('Návrat na hlavní stránku...');
-        // window.location.href = 'index.html';
-    }
+    <script>
+        function goBack() {
+            // Simulace návratu na hlavní stránku
+            alert('Návrat na hlavní stránku...');
+            // window.location.href = 'index.html';
+        }
 
-    // Funkce pro vyhledávání
-    document.getElementById('searchInput').addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase().trim();
-        const headings = document.querySelectorAll('h2');
-        const paragraphs = document.querySelectorAll('p');
-        
-        // Odstranění předchozího zvýraznění
-        headings.forEach(heading => {
-            heading.innerHTML = heading.textContent;
-        });
-        
-        paragraphs.forEach(paragraph => {
-            paragraph.innerHTML = paragraph.textContent;
-        });
-        
-        // Pokud je vyhledávací termín prázdný, skončíme
-        if (searchTerm === '') return;
-        
-        // Procházení nadpisů a odstavců
-        let firstMatch = null;
-        
-        headings.forEach((heading, index) => {
-            const text = heading.textContent.toLowerCase();
-            if (text.includes(searchTerm)) {
-                const regex = new RegExp(`(${searchTerm})`, 'gi');
-                heading.innerHTML = heading.textContent.replace(regex, '<span class="highlight">$1</span>');
-                
-                // Zvýraznění odpovídajícího odstavce
-                if (paragraphs[index]) {
-                    paragraphs[index].innerHTML = paragraphs[index].textContent.replace(regex, '<span class="highlight">$1</span>');
+        // Funkce pro vyhledávání
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            const headings = document.querySelectorAll('h2');
+            const paragraphs = document.querySelectorAll('p');
+            
+            // Odstranění předchozího zvýraznění
+            headings.forEach(heading => {
+                heading.innerHTML = heading.textContent;
+            });
+            
+            paragraphs.forEach(paragraph => {
+                paragraph.innerHTML = paragraph.textContent;
+            });
+            
+            // Pokud je vyhledávací termín prázdný, skončíme
+            if (searchTerm === '') return;
+            
+            // Procházení nadpisů a odstavců
+            let firstMatch = null;
+            
+            headings.forEach((heading, index) => {
+                const text = heading.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    const regex = new RegExp(`(${searchTerm})`, 'gi');
+                    heading.innerHTML = heading.textContent.replace(regex, '<span class="highlight">$1</span>');
+                    
+                    // Zvýraznění odpovídajícího odstavce
+                    if (paragraphs[index]) {
+                        paragraphs[index].innerHTML = paragraphs[index].textContent.replace(regex, '<span class="highlight">$1</span>');
+                    }
+                    
+                    // Uložení prvního nalezeného nadpisu pro scrollování
+                    if (!firstMatch) {
+                        firstMatch = heading;
+                    }
                 }
-                
-                // Uložení prvního nalezeného nadpisu pro scrollování
-                if (!firstMatch) {
-                    firstMatch = heading;
-                }
+            });
+            
+            // Scrollování k prvnímu nalezenému nadpisu
+            if (firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         });
-        
-        // Scrollování k prvnímu nalezenému nadpisu
-        if (firstMatch) {
-            firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    });
-</script>
+    </script>
 </body>
 </html>
