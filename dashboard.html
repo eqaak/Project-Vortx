@@ -81,10 +81,7 @@
         .info-box { margin-bottom:20px; padding:15px; background:rgba(0,0,0,0.3); border-radius:10px; border-left:4px solid #2a5298; }
         .info-title { font-size:1rem; color:#aaa; margin-bottom:8px; }
         .character-list, .vehicle-list, .inventory-grid { max-height:300px; overflow-y:auto; }
-        .character-item, .vehicle-item, .inventory-item { display:flex; align-items:center; padding:10px; background:rgba(255,255,255,0.05); border-radius:8px; margin-bottom:8px; }
-        .character-avatar { width:40px; height:40px; border-radius:50%; background:#2a5298; display:flex; align-items:center; justify-content:center; margin-right:12px; font-weight:bold; }
         .inventory-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(80px,1fr)); gap:10px; }
-        .inventory-item { flex-direction:column; text-align:center; }
         .empty-message { color: #aaa; text-align: center; padding: 20px; font-style: italic; }
     </style>
 </head>
@@ -98,9 +95,12 @@
         </div>
 
         <div class="user-profile">
-            <img src="https://cdn.discordapp.com/embed/avatars/0.png" class="user-avatar" id="user-avatar">
+            <div class="user-avatar">
+                <i class="fas fa-user"></i>
+            </div>
             <div class="user-info">
-                <div class="user-name" id="user-name">Uživatel</div>
+                <div class="user-name">Uživatel</div>
+                <div class="user-discriminator">#0000</div>
             </div>
             <button class="logout-btn" onclick="logout()">
                 <i class="fas fa-sign-out-alt"></i> Odhlásit
@@ -109,21 +109,21 @@
 
         <div class="info-box">
             <div class="info-title">TVÉ POSTAVY</div>
-            <div class="character-list" id="character-list">
+            <div class="character-list">
                 <div class="empty-message">Žádné postavy</div>
             </div>
         </div>
 
         <div class="info-box">
             <div class="info-title">VLASTNĚNÁ VOZIDLA</div>
-            <div class="vehicle-list" id="vehicle-list">
+            <div class="vehicle-list">
                 <div class="empty-message">Žádná vozidla</div>
             </div>
         </div>
 
         <div class="info-box">
             <div class="info-title">INVENTÁŘ</div>
-            <div class="inventory-grid" id="inventory-grid">
+            <div class="inventory-grid">
                 <div class="empty-message">Inventář je prázdný</div>
             </div>
         </div>
