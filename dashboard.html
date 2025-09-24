@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>deshboard</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -29,24 +29,30 @@
             margin-top: 20px;
             position: relative;
         }
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
         .back-btn {
             position: absolute;
-            top: 30px;
-            left: 30px;
-            background: rgba(74, 142, 255, 0.2);
+            left: 0;
+            background: rgba(74, 142, 255, 0.3);
             border: none;
             color: #4a8eff;
-            padding: 8px 12px;
+            padding: 10px 15px;
             border-radius: 5px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             transition: background 0.3s;
-            font-size: 0.9rem;
+            z-index: 10;
         }
         .back-btn:hover {
-            background: rgba(74, 142, 255, 0.3);
+            background: rgba(74, 142, 255, 0.5);
         }
         .user-profile {
             display:flex;
@@ -55,21 +61,23 @@
             padding:15px;
             background: rgba(0,0,0,0.3);
             border-radius:10px;
-            margin-top: 40px;
         }
         .user-avatar { width:60px; height:60px; border-radius:50%; margin-right:15px; border:2px solid #4a8eff; }
         .user-info { flex:1; }
         .user-name { font-size:1.2rem; font-weight:600; margin-bottom:5px; }
         .user-discriminator { color:#aaa; font-size:0.9rem; }
         .logout-btn {
-            background: rgba(231,76,60,0.2);
-            border:none;
-            color:#e74c3c;
-            padding:5px 10px;
-            border-radius:5px;
-            cursor:pointer;
+            background: rgba(231,76,60,0.3);
+            border: none;
+            color: #e74c3c;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
         }
-        .logout-btn:hover { background: rgba(231,76,60,0.3);}
+        .logout-btn:hover { 
+            background: rgba(231,76,60,0.5);
+        }
         .info-box { margin-bottom:20px; padding:15px; background:rgba(0,0,0,0.3); border-radius:10px; border-left:4px solid #2a5298; }
         .info-title { font-size:1rem; color:#aaa; margin-bottom:8px; }
         .character-list, .vehicle-list, .inventory-grid { max-height:300px; overflow-y:auto; }
@@ -81,20 +89,22 @@
 </head>
 <body>
     <div class="dashboard-container">
-        <!-- Tlačítko zpět uvnitř kontejneru -->
-        <button class="back-btn" onclick="goBack()">
-            <i class="fas fa-arrow-left"></i> Zpět
-        </button>
-
-        <h1 style="text-align:center; margin-bottom:20px;">TVŮJ DASHBOARD</h1>
+        <!-- Hlavička s tlačítkem zpět a nadpisem -->
+        <div class="header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> Zpět na hlavní stránku
+            </button>
+            <h1>TVŮJ DASHBOARD</h1>
+        </div>
 
         <div class="user-profile">
             <img src="https://cdn.discordapp.com/embed/avatars/0.png" class="user-avatar" id="user-avatar">
             <div class="user-info">
                 <div class="user-name" id="user-name">CzechPlayer</div>
-                
             </div>
-            <button class="logout-btn" onclick="logout()">Odhlásit</button>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Odhlásit
+            </button>
         </div>
 
         <div class="info-box">
@@ -163,14 +173,33 @@
         });
 
         function logout() {
-            alert('Odhlášeno! Stránku znovu načti pro simulaci přihlášení.');
+            if (confirm('Opravdu se chcete odhlásit?')) {
+                alert('Odhlášení úspěšné!');
+                // Simulace odhlášení - přesměrování na login stránku
+                setTimeout(() => {
+                    window.location.href = 'login.html'; // Změň na svou login stránku
+                }, 1000);
+            }
         }
 
         function goBack() {
-            alert('Návrat na hlavní stránku...');
-            // Zde by byl přesměrování na hlavní stránku, např.:
-            // window.location.href = 'index.html';
+            if (confirm('Chcete se vrátit na hlavní stránku?')) {
+                // Simulace návratu na hlavní stránku
+                window.location.href = 'index.html'; // Změň na svou hlavní stránku
+            }
         }
+
+        // Přidáme také funkci pro klávesové zkratky
+        document.addEventListener('keydown', function(event) {
+            // ESC pro návrat zpět
+            if (event.key === 'Escape') {
+                goBack();
+            }
+            // Ctrl+Q pro odhlášení
+            if (event.ctrlKey && event.key === 'q') {
+                logout();
+            }
+        });
     </script>
 </body>
 </html>
