@@ -85,6 +85,7 @@
         .character-avatar { width:40px; height:40px; border-radius:50%; background:#2a5298; display:flex; align-items:center; justify-content:center; margin-right:12px; font-weight:bold; }
         .inventory-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(80px,1fr)); gap:10px; }
         .inventory-item { flex-direction:column; text-align:center; }
+        .empty-message { color: #aaa; text-align: center; padding: 20px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -109,87 +110,42 @@
 
         <div class="info-box">
             <div class="info-title">TVÉ POSTAVY</div>
-            <div class="character-list" id="character-list"></div>
+            <div class="character-list" id="character-list">
+                <div class="empty-message">Žádné postavy</div>
+            </div>
         </div>
 
         <div class="info-box">
             <div class="info-title">VLASTNĚNÁ VOZIDLA</div>
-            <div class="vehicle-list" id="vehicle-list"></div>
+            <div class="vehicle-list" id="vehicle-list">
+                <div class="empty-message">Žádná vozidla</div>
+            </div>
         </div>
 
         <div class="info-box">
             <div class="info-title">INVENTÁŘ</div>
-            <div class="inventory-grid" id="inventory-grid"></div>
+            <div class="inventory-grid" id="inventory-grid">
+                <div class="empty-message">Inventář je prázdný</div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Simulace dat
-        const characters = [
-            { name: "Jan Novák", birth: "12.03.1990" },
-            { name: "Petr Svoboda", birth: "25.07.1985" },
-            { name: "Tomáš Král", birth: "03.11.2000" }
-        ];
-        const vehicles = [
-            { name: "BMW M5", plate: "7A8 1234" },
-            { name: "Audi RS6", plate: "3B5 6789" },
-            { name: "Porsche 911", plate: "2C4 1011" }
-        ];
-        const inventory = [
-            { name: "Peníze", amount: "$125,000" },
-            { name: "Telefon", amount: "1" },
-            { name: "Zbraně", amount: "2" },
-            { name: "Jídlo", amount: "5" },
-            { name: "Léky", amount: "3" },
-            { name: "Nástroje", amount: "4" }
-        ];
-
-        // Naplnění seznamů postav
-        const charList = document.getElementById('character-list');
-        characters.forEach(c => {
-            const div = document.createElement('div');
-            div.className = 'character-item';
-            const initial = c.name.charAt(0).toUpperCase();
-            div.innerHTML = `<div class="character-avatar">${initial}</div><div>${c.name}</div><div style="margin-left:auto;color:#aaa;">${c.birth}</div>`;
-            charList.appendChild(div);
-        });
-
-        // Naplnění vozidel
-        const vehList = document.getElementById('vehicle-list');
-        vehicles.forEach(v => {
-            const div = document.createElement('div');
-            div.className = 'vehicle-item';
-            div.innerHTML = `<div style="margin-right:12px;"><i class="fas fa-car" style="color:#4a8eff;"></i></div><div>${v.name}</div><div style="margin-left:auto;color:#aaa;">${v.plate}</div>`;
-            vehList.appendChild(div);
-        });
-
-        // Naplnění inventáře
-        const invGrid = document.getElementById('inventory-grid');
-        inventory.forEach(i => {
-            const div = document.createElement('div');
-            div.className = 'inventory-item';
-            div.innerHTML = `<div>${i.name}</div><div style="color:#4a8eff;">${i.amount}</div>`;
-            invGrid.appendChild(div);
-        });
-
         function logout() {
             if (confirm('Opravdu se chcete odhlásit?')) {
-                alert('Odhlášení úspěšné!');
-                // Simulace odhlášení - přesměrování na login stránku
-                setTimeout(() => {
-                    window.location.href = 'login.html'; // Změň na svou login stránku
-                }, 1000);
+                // Přesměrování na login stránku
+                window.location.href = 'login.html';
             }
         }
 
         function goBack() {
             if (confirm('Chcete se vrátit na hlavní stránku?')) {
-                // Simulace návratu na hlavní stránku
-                window.location.href = 'index.html'; // Změň na svou hlavní stránku
+                // Přesměrování na hlavní stránku
+                window.location.href = 'index.html';
             }
         }
 
-        // Přidáme také funkci pro klávesové zkratky
+        // Přidáme funkci pro klávesové zkratky
         document.addEventListener('keydown', function(event) {
             // ESC pro návrat zpět
             if (event.key === 'Escape') {
