@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="cs">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Vortex - Player Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Project Vortex - Player Dashboard</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -15,20 +16,21 @@
         
         body {
             background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), 
-                        url('https://images.unsplash.com/photo-1519791883288-dc8bd696e667?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+                        url('GTA5 16_9.png-1920x1080.png') no-repeat center center fixed;
             background-size: cover;
             color: white;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             padding: 20px;
+            margin-left: 40px;
         }
         
         .dashboard {
             display: flex;
-            max-width: 1200px;
+            max-width: 1400px;
             width: 100%;
             gap: 30px;
             flex-wrap: wrap;
@@ -176,6 +178,71 @@
             text-align: center;
         }
         
+        .player-info-panel {
+            flex: 1;
+            min-width: 350px;
+            background: rgba(20, 20, 30, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 0 25px rgba(0, 100, 200, 0.3);
+            border: 1px solid rgba(100, 150, 255, 0.2);
+            display: none;
+        }
+        
+        .player-info-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(100, 150, 255, 0.3);
+        }
+        
+        .player-info-icon {
+            font-size: 2.5rem;
+            margin-right: 15px;
+            color: #6c5ce7;
+        }
+        
+        .player-info-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        
+        .player-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .player-table th {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #4a8eff;
+            border-bottom: 2px solid rgba(100, 150, 255, 0.3);
+        }
+        
+        .player-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .player-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .player-table .label {
+            font-weight: 600;
+            color: #aaa;
+            width: 40%;
+        }
+        
+        .player-table .value {
+            color: #ffffff;
+        }
+        
         header {
             font-size: 2.8rem;
             font-weight: 900;
@@ -250,6 +317,8 @@
             gap: 10px;
             width: 100%;
             max-width: 300px;
+            cursor: pointer;
+            border: none;
         }
         
         .connect-button:hover {
@@ -264,6 +333,35 @@
             color: #aaa;
             text-align: center;
             width: 100%;
+        }
+        
+        @media (max-width: 1200px) {
+            .dashboard {
+                flex-direction: column;
+            }
+            
+            .player-info-panel {
+                order: 3;
+                width: 100%;
+            }
+            
+            header {
+                font-size: 2.2rem;
+            }
+            
+            .buttons-row {
+                align-items: center;
+            }
+            
+            a.button, .connect-button {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            body {
+                align-items: center;
+                margin-left: 0;
+            }
         }
         
         @media (max-width: 900px) {
@@ -282,6 +380,11 @@
             a.button, .connect-button {
                 width: 100%;
                 max-width: 300px;
+            }
+            
+            body {
+                align-items: center;
+                margin-left: 0;
             }
         }
         
@@ -315,10 +418,13 @@
         
         .vortex-logo {
             font-size: 2.8rem;
-            margin-bottom: 20px;
-            color: #6c5ce7;
-            text-shadow: 0 0 10px rgba(108, 92, 231, 0.7);
             font-weight: 900;
+            background: linear-gradient(135deg, #887af1 0%, #6194e6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            letter-spacing: 1.5px;
         }
         
         .inventory-grid {
@@ -334,11 +440,45 @@
             padding: 10px;
             text-align: center;
             transition: all 0.3s ease;
+            position: relative;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         
         .inventory-item:hover {
             background: rgba(255, 255, 255, 0.15);
             transform: translateY(-2px);
+        }
+        
+        .inventory-item-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            color: #4a8eff;
+        }
+        
+        .inventory-item-name {
+            font-size: 0.7rem;
+            color: #ccc;
+            text-align: center;
+            word-break: break-word;
+        }
+        
+        .inventory-item-count {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
         }
         
         .vehicle-list {
@@ -728,542 +868,584 @@
             color: #4CAF50;
         }
 
-        /* Rozšířené styly pro sekci Moje informace */
-        .my-info-section {
-            margin-top: 20px;
+        /* VIP Status Styles */
+        .vip-status {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border-left: 4px solid #FFD700;
+            display: none;
+        }
+        
+        .vip-badge {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #000;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .vip-badge i {
+            margin-right: 5px;
+        }
+        
+        .vip-info {
+            font-size: 0.9rem;
+            color: #FFD700;
+        }
+        
+        .vip-features {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+        
+        /* Buy VIP Button */
+        .buy-vip-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #000;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            margin-top: 10px;
+            gap: 10px;
+            width: 100%;
+            max-width: 300px;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .buy-vip-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(255, 215, 0, 0.4);
+            background: linear-gradient(135deg, #FFA500 0%, #FFB733 100%);
+        }
+        
+        /* VIP Purchase Section */
+        .vip-purchase {
+            text-align: center;
             padding: 20px;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 10px;
-            border-left: 4px solid #6c5ce7;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            margin-top: 20px; /* Přidána mezera nad VIP sekcí */
+            margin-bottom: 20px;
         }
         
-        .my-info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        .vip-purchase-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #FFD700;
+            margin-bottom: 15px;
+        }
+        
+        .vip-packages {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
             gap: 15px;
             margin-top: 15px;
         }
         
-        .my-info-item {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .my-info-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        .my-info-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            color: #6c5ce7;
-        }
-        
-        .my-info-label {
-            font-size: 0.9rem;
-            color: #aaa;
-            margin-bottom: 5px;
-        }
-        
-        .my-info-value {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #4a8eff;
-        }
-
-        /* Nové styly pro profesionální popis serveru */
-        .server-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .feature-item {
+        .vip-package {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
-            padding: 20px;
-            text-align: center;
+            padding: 15px;
+            width: 150px;
             transition: all 0.3s ease;
-            border: 1px solid rgba(100, 150, 255, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.2);
         }
         
-        .feature-item:hover {
+        .vip-package:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            border-color: rgba(100, 150, 255, 0.3);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.2);
+            border-color: rgba(255, 215, 0, 0.5);
         }
         
-        .feature-icon {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            color: #6c5ce7;
-        }
-        
-        .feature-title {
-            font-size: 1.2rem;
+        .vip-package-title {
+            font-size: 1rem;
             font-weight: 600;
+            color: #FFD700;
             margin-bottom: 10px;
+        }
+        
+        .vip-package-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+        
+        .vip-package-features {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-bottom: 15px;
+        }
+        
+        .buy-package-btn {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .buy-package-btn:hover {
+            background: linear-gradient(135deg, #FFA500 0%, #FFB733 100%);
+        }
+        
+        /* Inventory Section */
+        .inventory-section {
+            margin-top: 25px;
+        }
+        
+        .inventory-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(100, 150, 255, 0.3);
+        }
+        
+        .inventory-icon {
+            font-size: 1.8rem;
+            margin-right: 12px;
+            color: #4a8eff;
+        }
+        
+        .inventory-title {
+            font-size: 1.4rem;
+            font-weight: 700;
             color: #ffffff;
         }
         
-        .feature-description {
-            font-size: 0.9rem;
-            color: #cccccc;
-            line-height: 1.4;
-        }
-        
-        .server-stats {
+        .inventory-stats {
             display: flex;
-            justify-content: space-around;
-            margin: 25px 0;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .stat-item {
-            text-align: center;
-            padding: 15px;
-        }
-        
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #6c5ce7;
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
+            justify-content: space-between;
+            margin-bottom: 15px;
             font-size: 0.9rem;
-            color: #cccccc;
+            color: #aaa;
         }
         
-        .server-description {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 25px;
-            text-align: justify;
+        .inventory-weight {
+            font-weight: 600;
+            color: #4a8eff;
         }
     </style>
 </head>
 <body>
-    <div class="notification" id="notification">
-        <div class="notification-icon"><i class="fas fa-info-circle"></i></div>
-        <div class="notification-message" id="notification-message">Zpráva</div>
-    </div>
-
-    <div class="modal" id="logout-modal">
-        <div class="modal-content">
-            <div class="modal-title">Odhlášení</div>
-            <p>Opravdu se chceš odhlásit?</p>
-            <div class="modal-buttons">
-                <button class="modal-btn confirm" id="confirm-logout">Ano, odhlásit</button>
-                <button class="modal-btn cancel" id="cancel-logout">Zrušit</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="dashboard">
-        <div class="player-panel">
-            <div class="panel-header">
-                <div class="panel-icon"><i class="fas fa-user"></i></div>
-                <div class="panel-title">Player Dashboard</div>
-            </div>
-            
-            <div class="login-box" id="login-section">
-                <div class="info-title">PŘIHLÁŠENÍ</div>
-                <p>Pro zobrazení svých postav a vozidel se musíš přihlásit přes Discord</p>
-                <button class="login-button" id="discord-login">
-                    <i class="fab fa-discord"></i>
+<div class="notification" id="notification">
+<div class="notification-icon"><i class="fas fa-info-circle"></i></div>
+<div class="notification-message" id="notification-message">Zpráva</div>
+</div>
+<div class="modal" id="logout-modal">
+<div class="modal-content">
+<div class="modal-title">Odhlášení</div>
+<p>Opravdu se chceš odhlásit?</p>
+<div class="modal-buttons">
+<button class="modal-btn confirm" id="confirm-logout">Ano, odhlásit</button>
+<button class="modal-btn cancel" id="cancel-logout">Zrušit</button>
+</div>
+</div>
+</div>
+<div class="modal" id="vip-modal">
+<div class="modal-content">
+<div class="modal-title">Zakoupit VIP</div>
+<p>Vyber si VIP balíček, který ti nejvíce vyhovuje:</p>
+<div class="vip-packages">
+<div class="vip-package">
+<div class="vip-package-title">VIP Basic</div>
+<div class="vip-package-price">199 Kč</div>
+<div class="vip-package-features">
+<p>• VIP vozidlo</p>
+<p>• 50 000$ start</p>
+<p>• VIP chat</p>
+</div>
+<button class="buy-package-btn" data-package="basic">Koupit</button>
+</div>
+<div class="vip-package">
+<div class="vip-package-title">VIP Premium</div>
+<div class="vip-package-price">399 Kč</div>
+<div class="vip-package-features">
+<p>• 2x VIP vozidla</p>
+<p>• 100 000$ start</p>
+<p>• VIP dům</p>
+<p>• VIP skin</p>
+</div>
+<button class="buy-package-btn" data-package="premium">Koupit</button>
+</div>
+<div class="vip-package">
+<div class="vip-package-title">VIP Ultimate</div>
+<div class="vip-package-price">699 Kč</div>
+<div class="vip-package-features">
+<p>• 3x VIP vozidla</p>
+<p>• 250 000$ start</p>
+<p>• VIP mansion</p>
+<p>• VIP podpora</p>
+</div>
+<button class="buy-package-btn" data-package="ultimate">Koupit</button>
+</div>
+</div>
+<div class="modal-buttons">
+<button class="modal-btn cancel" id="cancel-vip">Zrušit</button>
+</div>
+</div>
+</div>
+<div class="dashboard">
+<div class="player-panel">
+<div class="panel-header">
+<div class="panel-icon"><i class="fas fa-user"></i></div>
+<div class="panel-title">Player Dashboard</div>
+</div>
+<!-- VIP Status Section -->
+<div class="vip-status" id="vip-status">
+<div class="vip-badge">
+<i class="fas fa-crown"></i> VIP STATUS
+                </div>
+<div class="vip-info">Máte aktivní VIP účet!</div>
+<div class="vip-features">Výhody: Více peněz, VIP vozidla, Exkluzivní obsah</div>
+</div>
+<div class="login-box" id="login-section">
+<div class="info-title">PŘIHLÁŠENÍ</div>
+<p>Pro zobrazení svých postav a vozidel se musíš přihlásit přes Discord</p>
+<button class="login-button" id="discord-login">
+<i class="fab fa-discord"></i>
                     Přihlásit se přes Discord
                 </button>
-            </div>
-            
-            <!-- Server Status Panel -->
-            <div class="server-status" id="server-status">
-                <div class="info-title">STATUS SERVERU</div>
-                <div class="server-name" id="serverName">Project Vortex</div>
-                
-                <div class="status-indicator">
-                    <div class="status-dot" id="statusIndicator"></div>
-                    <div class="status-text" id="statusText">Kontroluji stav...</div>
-                </div>
-                
-                <div class="ping-info">
+</div>
+<!-- Server Status Panel -->
+<div class="server-status" id="server-status">
+<div class="info-title">STATUS SERVERU</div>
+<div class="server-name" id="serverName">Project Vortex</div>
+<div class="status-indicator">
+<div class="status-dot" id="statusIndicator"></div>
+<div class="status-text" id="statusText">Kontroluji stav...</div>
+</div>
+<div class="ping-info">
                     Ping: <span class="ping-value" id="pingValue">-</span> ms
                 </div>
-                
-                <div class="players-info">
-                    <div class="player-count">
-                        <div class="count-number" id="onlinePlayers">0</div>
-                        <div class="count-label">Online hráčů</div>
-                    </div>
-                    <div class="player-count">
-                        <div class="count-number">48</div>
-                        <div class="count-label">Maximální kapacita</div>
-                    </div>
-                </div>
-                
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
-                    </div>
-                    <div class="progress-text" id="progressText">0% zaplněno</div>
-                </div>
-                
-                <div class="last-updated" id="lastUpdated">Naposledy aktualizováno: --:--:--</div>
-                
-                <button class="refresh-btn" id="refreshBtn">
-                    <i class="fas fa-sync-alt"></i> Aktualizovat
+<div class="players-info">
+<div class="player-count">
+<div class="count-number" id="onlinePlayers">0</div>
+<div class="count-label">Online hráčů</div>
+</div>
+<div class="player-count">
+<div class="count-number" id="maxPlayers">48</div>
+<div class="count-label">Maximální kapacita</div>
+</div>
+</div>
+<div class="progress-container">
+<div class="progress-bar">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+<div class="progress-text" id="progressText">0% zaplněno</div>
+</div>
+<div class="last-updated" id="lastUpdated">Naposledy aktualizováno: -</div>
+<button class="refresh-btn" id="refreshStatus">
+<i class="fas fa-sync-alt"></i> Aktualizovat
                 </button>
-            </div>
-            
-            <!-- Tlačítka v levém sloupci -->
-            <div class="buttons-row">
-                <a class="button discord" href="https://discord.gg/hqXuR7bHDX" target="_blank">
-                    <i class="fab fa-discord"></i>
-                    Připoj se k nám na Discordu
+</div>
+<!-- VIP Purchase Section - oddělená od server statusu -->
+<div class="vip-purchase">
+<div class="vip-purchase-title">ZAKOUPIT VIP</div>
+<p>Získej exkluzivní výhody s VIP účtem!</p>
+<button class="buy-vip-button" id="buy-vip-button">
+<i class="fas fa-crown"></i>
+                    Zakoupit VIP
+                </button>
+</div>
+<div class="buttons-row">
+<a class="button discord" href="https://discord.gg/UvJ2zUGWrB">
+<i class="fab fa-discord icon"></i>
+                    Discord Server
                 </a>
-                
-                <a class="button" href="pravidla.html">
-                    <i class="fas fa-book"></i>
-                    PRAVIDLA
+<a class="button" href="https://protjectvortex.netlify.app/Pravidla">
+<i class="fas fa-book icon"></i>
+                    Pravidla
                 </a>
-
-                <a href="fivem://connect/cfx.re/join/ellb5b" class="connect-button">
-                    <i class="fas fa-play"></i> Připojit se k serveru
+<a class="button" href="#">
+<i class="fas fa-newspaper icon"></i>
+                    Novinky
                 </a>
-            </div>
-            
-            <div id="user-profile" style="display: none;">
-                <div class="user-profile">
-                    <img src="" class="user-avatar" id="user-avatar" alt="User Avatar">
-                    <div class="user-info">
-                        <div class="user-name" id="user-name">Username</div>
-                        <div class="user-discriminator" id="user-discriminator">#0000</div>
-                    </div>
-                    <button class="logout-btn" id="logout-btn">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </button>
+</div>
+<!-- Funkční tlačítko Připojit se na server -->
+<button class="connect-button" id="connect-button">
+<i class="fas fa-play"></i>
+                PŘIPOJIT SE K SERVERU
+            </button>
+<a class="support-link" href="https://discordapp.com/channels/1368487722552918026/1376155524617207870">
+<i class="fas fa-question-circle"></i>
+                Podpora &amp; Nápověda
+            </a>
+</div>
+<div class="container">
+<div class="vortex-logo">PROJECT VORTEX</div>
+<!-- Vylepšená sekce O serveru s profesionálním popisem -->
+<div class="server-info-box">
+<div class="server-info-title">
+<i class="fas fa-server"></i> O SERVERU
                 </div>
-                
-                <!-- Rozšířená sekce Moje informace -->
-                <div class="my-info-section">
-                    <div class="info-title">MOJE INFORMACE</div>
-                    <div class="my-info-grid" id="my-info-grid">
-                        <div class="my-info-item">
-                            <div class="my-info-icon"><i class="fas fa-user-clock"></i></div>
-                            <div class="my-info-label">Celkový čas hraní</div>
-                            <div class="my-info-value" id="total-playtime">0 hodin</div>
-                        </div>
-                        <div class="my-info-item">
-                            <div class="my-info-icon"><i class="fas fa-coins"></i></div>
-                            <div class="my-info-label">Herní měna</div>
-                            <div class="my-info-value" id="game-currency">$0</div>
-                        </div>
-                        <div class="my-info-item">
-                            <div class="my-info-icon"><i class="fas fa-trophy"></i></div>
-                            <div class="my-info-label">Úroveň účtu</div>
-                            <div class="my-info-value" id="account-level">1</div>
-                        </div>
-                        <div class="my-info-item">
-                            <div class="my-info-icon"><i class="fas fa-calendar-alt"></i></div>
-                            <div class="my-info-label">Členem od</div>
-                            <div class="my-info-value" id="member-since">-</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="info-box">
-                    <div class="info-title">TVÉ POSTAVY</div>
-                    <div class="character-list" id="character-list">
-                        <div class="loading">Načítám postavy...</div>
-                    </div>
-                </div>
-                
-                <div class="info-box">
-                    <div class="info-title">VLASTNĚNÁ VOZIDLA</div>
-                    <div class="vehicle-list" id="vehicle-list">
-                        <div class="loading">Načítám vozidla...</div>
-                    </div>
-                </div>
-                
-                <div class="info-box">
-                    <div class="info-title">INVENTÁŘ</div>
-                    <div class="inventory-grid" id="inventory-grid">
-                        <div class="loading">Načítám inventář...</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="container">
-            <div class="vortex-logo">
-                PROJECT VORTEX
-            </div>
-            
-            <!-- Vylepšená sekce O serveru s profesionálním popisem -->
-            <div class="server-info-box">
-                <div class="server-info-title">
-                    <i class="fas fa-server"></i> O SERVERU
-                </div>
-                
-                <div class="server-description">
+<div class="server-description">
                     Project Vortex je prémiový český FiveM RolePlay server, který nabízí autentický herní zážitek s důrazem na kvalitu, stabilitu a komunitu. Naše platforma kombinuje nejmodernější technologie s propracovaným herním prostředím pro skutečně imerzivní RP zážitek.
                 </div>
-                
-                <div class="server-info-section">
-                    <div class="server-info-section-title">
-                        <i class="fas fa-star"></i> PREMIUM VLASTNOSTI
+<div class="server-info-section">
+<div class="server-info-section-title">
+<i class="fas fa-star"></i> PREMIUM VLASTNOSTI
                     </div>
-                    <p>Project Vortex nabízí exkluzivní obsah, který nenajdete na žádném jiném českém serveru. Naše unikátní funkce zahrnují custom ekonomický systém, real-time počasí, propracované frakce a pravidelné eventy s hodnotnými cenami.</p>
-                </div>
-                
-                <div class="server-info-section">
-                    <div class="server-info-section-title">
-                        <i class="fas fa-shield-alt"></i> BEZPEČNOST A ADMINISTRACE
+<p>Project Vortex nabízí exkluzivní obsah, který nenajdete na žádném jiném českém serveru. Naše unikátní funkce zahrnují custom ekonomický systém, real-time počasí, propracované frakce a pravidelné eventy s hodnotnými cenami.</p>
+</div>
+<div class="server-info-section">
+<div class="server-info-section-title">
+<i class="fas fa-shield-alt"></i> BEZPEČNOST A ADMINISTRACE
                     </div>
-                    <p>Zajišťujeme maximální bezpečnost herního prostředí pomocí pokročilých anti-cheat systémů a profesionálního admin týmu. Naše zero-tolerance politika vůči podvodům garantuje férové herní podmínky pro všechny hráče.</p>
-                </div>
-
-                                <div class="server-info-section">
-                    <div class="server-info-section-title">
-                        <i class="fas fa-headset"></i> PODPORA
+<p>Zajišťujeme maximální bezpečnost herního prostředí pomocí pokročilých anti-cheat systémů a profesionálního admin týmu. Naše zero-tolerance politika vůči podvodům garantuje férové herní podmínky pro všechny hráče.</p>
+</div>
+<div class="server-info-section">
+<div class="server-info-section-title">
+<i class="fas fa-headset"></i> PODPORA
                     </div>
-                    <p>Naše podpora je k dispozici 24/7 přes Discord. V případě problémů nebo dotazů nás neváhejte kontaktovat.</p>
-                    <a href="https://discordapp.com/channels/1368487722552918026/1376155524617207870" target="_blank" class="support-link">
-                        <i class="fab fa-discord"></i> Kontaktovat podporu na Discordu
+<p>Naše podpora je k dispozici 24/7 přes Discord. V případě problémů nebo dotazů nás neváhejte kontaktovat.</p>
+<a class="support-link" href="https://discordapp.com/channels/1368487722552918026/1376155524617207870" target="_blank">
+<i class="fab fa-discord"></i> Kontaktovat podporu na Discordu
                     </a>
-                </div>
-
-                <div class="server-info-section">
-                    <div class="server-info-section-title">
-                        <i class="fas fa-download"></i> JAK SE PŘIPOJIT
+</div>
+<div class="server-info-section">
+<div class="server-info-section-title">
+<i class="fas fa-download"></i> JAK SE PŘIPOJIT
                     </div>
-                    <p>Stažení FiveM klienta → Připojení přes IP: <strong>cfx.re/join/ellb5b</strong> → Registrace na našem Discordu → Vytvoření postavy → Začni svůj příběh!</p>
-                    <p>Pro nové hráče nabízíme uvítací balíček a asistované uvedení do herního světa.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <footer>
-        &copy; 2023 Project Vortex. Všechna práva vyhrazena. | Vytvořeno s <i class="fas fa-heart" style="color: #e74c3c;"></i> pro českou RP komunitu
+<p>Stažení FiveM klienta → Připojení přes IP: <strong>89.213.120.110:30120</strong> → Registrace na našem Discordu → Vytvoření postavy → Začni svůj příběh!</p>
+<p>Pro nové hráče nabízíme uvítací balíček a asistované uvedení do herního světa.</p>
+</div>
+</div>
+</div>
+<!-- Player Information Panel - přesunut doprava -->
+<div class="player-info-panel" id="player-info-panel">
+<div class="player-info-header">
+<div class="player-info-icon"><i class="fas fa-id-card"></i></div>
+<div class="player-info-title">Player Information</div>
+</div>
+<div class="user-profile" id="user-profile">
+<div class="user-avatar">
+<i class="fas fa-user-circle" style="font-size: 60px; color: #4a8eff;"></i>
+</div>
+<div class="user-info">
+<div class="user-name" id="user-name">Uživatel</div>
+<div class="user-discriminator" id="user-discriminator">#0000</div>
+</div>
+<button class="logout-btn" id="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
+</div>
+<table class="player-table">
+<tr>
+<td class="label">ID Hráče:</td>
+<td class="value" id="player-id">-</td>
+</tr>
+<tr>
+<td class="label">Jméno:</td>
+<td class="value" id="player-name">-</td>
+</tr>
+<tr>
+<td class="label">Level:</td>
+<td class="value" id="player-level">-</td>
+</tr>
+<tr>
+<td class="label">Peníze:</td>
+<td class="value" id="player-money">-</td>
+</tr>
+<tr>
+<td class="label">Bankovní účet:</td>
+<td class="value" id="player-bank">-</td>
+</tr>
+<tr>
+<td class="label">Doba hraní:</td>
+<td class="value" id="player-playtime">-</td>
+</tr>
+<tr>
+<td class="label">VIP Status:</td>
+<td class="value" id="player-vip">-</td>
+</tr>
+</table>
+<!-- Inventory Section -->
+<div class="inventory-section">
+<div class="inventory-header">
+<div class="inventory-icon"><i class="fas fa-backpack"></i></div>
+<div class="inventory-title">Inventář</div>
+</div>
+<div class="inventory-stats">
+<div>Kapacita: <span class="inventory-weight">24/50 kg</span></div>
+<div>Předmětů: 12</div>
+</div>
+<div class="inventory-grid">
+<div class="inventory-item">
+<div class="inventory-item-icon"><i class="fas fa-mobile-alt"></i></div>
+<div class="inventory-item-name">Telefon</div>
+<div class="inventory-item-count">1</div>
+</div>
+<div class="inventory-item">
+<div class="inventory-item-icon"><i class="fas fa-wallet"></i></div>
+<div class="inventory-item-name">Peněženka</div>
+<div class="inventory-item-count">1</div>
+</div>
+<div class="inventory-item">
+<div class="inventory-item-icon"><i class="fas fa-key"></i></div>
+<div class="inventory-item-name">Klíče od auta</div>
+<div class="inventory-item-count">2</div>
+</div>
+<div class="inventory-item">
+<div class="inventory-item-icon"><i class="fas fa-pizza-slice"></i></div>
+<div class="inventory-item-name">Jídlo</div>
+<div class="inventory-item-count">3</div>
+</div>
+<div class="inventory-item">
+<div class="inventory-item-icon"><i class="fas fa-wine-bottle"></i></div>
+<div class="inventory-item-name">Voda</div>
+<div class="inventory-item-count">2</div>
+</div>
+<div class="inventory-item">
+<div class="inventory-item-icon"><i class="fas fa-toolbox"></i></div>
+<div class="inventory-item-name">Nářadí</div>
+<div class="inventory-item-count">1</div>
+</div>
+<div class="inventory-item">
+<div class="inventory-item-icon"><i class="fas fa-first-aid"></i></div>
+<div class="inventory-item-name">Lékárnička</div>
+<div class="inventory-item-count">1</div>
+</div>
+<div class="inventory-item">
+<div class="inventory-item-icon"><i class="fas fa-gem"></i></div>
+<div class="inventory-item-name">Drahokamy</div>
+<div class="inventory-item-count">5</div>
+</div>
+</div>
+</div>
+<div class="panel-header" style="margin-top: 30px;">
+<div class="panel-icon"><i class="fas fa-users"></i></div>
+<div class="panel-title">Moje postavy</div>
+</div>
+<div class="character-list" id="character-list">
+<div class="character-item">
+<div class="character-avatar">JD</div>
+<div class="character-name">John Doe</div>
+<div class="character-level">Level 15</div>
+</div>
+<div class="character-item">
+<div class="character-avatar">MJ</div>
+<div class="character-name">Mary Jane</div>
+<div class="character-level">Level 8</div>
+</div>
+</div>
+<div class="panel-header" style="margin-top: 30px;">
+<div class="panel-icon"><i class="fas fa-car"></i></div>
+<div class="panel-title">Moje vozidla</div>
+</div>
+<div class="vehicle-list" id="vehicle-list">
+<div class="vehicle-item">
+<div class="vehicle-icon"><i class="fas fa-car"></i></div>
+<div class="vehicle-name">Sultan RS</div>
+<div class="vehicle-plate">VORTEX1</div>
+</div>
+<div class="vehicle-item">
+<div class="vehicle-icon"><i class="fas fa-motorcycle"></i></div>
+<div class="vehicle-name">Bati 801</div>
+<div class="vehicle-plate">VORTEX2</div>
+</div>
+</div>
+</div>
+</div>
+<footer>
+        Project Vortex © 2023 | Všechna práva vyhrazena
     </footer>
-
-    <script>
-        // OPRAVENÁ KONFIGURACE
-        const DISCORD_CLIENT_ID = "1419670780836319312";
-        const DISCORD_REDIRECT_URI = "https://resilient-torte-29a707.netlify.app";
-        
-        // DOM elementy
-        const loginSection = document.getElementById('login-section');
-        const userProfile = document.getElementById('user-profile');
-        const discordLoginBtn = document.getElementById('discord-login');
-        const logoutBtn = document.getElementById('logout-btn');
-        const confirmLogoutBtn = document.getElementById('confirm-logout');
-        const cancelLogoutBtn = document.getElementById('cancel-logout');
-        const logoutModal = document.getElementById('logout-modal');
-        const notification = document.getElementById('notification');
-        const notificationMessage = document.getElementById('notification-message');
-        
-        // Server Status Elements
-        const serverName = document.getElementById('serverName');
-        const statusIndicator = document.getElementById('statusIndicator');
-        const statusText = document.getElementById('statusText');
-        const pingValue = document.getElementById('pingValue');
-        const onlinePlayers = document.getElementById('onlinePlayers');
-        const progressFill = document.getElementById('progressFill');
-        const progressText = document.getElementById('progressText');
-        const lastUpdated = document.getElementById('lastUpdated');
-        const refreshBtn = document.getElementById('refreshBtn');
-        
-        // Funkce pro zobrazení notifikace
-        function showNotification(message, type = 'info') {
-            notificationMessage.textContent = message;
-            notification.className = 'notification';
-            notification.classList.add(type);
-            notification.classList.add('show');
+<script>
+        // Funkce pro připojení na server
+        document.getElementById('connect-button').addEventListener('click', function() {
+            // IP adresa serveru
+            const serverIP = '89.213.120.110:30120';
             
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 5000);
-        }
-        
-        // Funkce pro kontrolu, zda je uživatel přihlášen
-        function checkLoginStatus() {
-            const userData = localStorage.getItem('discordUserData');
-            if (userData) {
-                try {
-                    const user = JSON.parse(userData);
-                    displayUserProfile(user);
-                    loadUserData(user.id);
-                    showNotification(`Vítej zpět, ${user.username}!`, 'success');
-                } catch (e) {
-                    localStorage.removeItem('discordUserData');
-                    showNotification('Chyba při načítání uživatelských dat', 'error');
-                }
-            }
-        }
-        
-        // Funkce pro zobrazení uživatelského profilu
-        function displayUserProfile(user) {
-            loginSection.style.display = 'none';
-            userProfile.style.display = 'block';
+            // Vytvoření notifikace
+            showNotification('Připojování na server...', 'success');
             
-            document.getElementById('user-name').textContent = user.username;
-            document.getElementById('user-discriminator').textContent = '#' + user.discriminator;
-            
-            // Avatar uživatele
-            if (user.avatar) {
-                document.getElementById('user-avatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
-            } else {
-                // Výchozí avatar pokud uživatel nemá nastavený
-                const defaultAvatarNumber = parseInt(user.discriminator) % 5;
-                document.getElementById('user-avatar').src = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarNumber}.png`;
-            }
-        }
-        
-        // Funkce pro načtení dat z FiveM serveru (simulace)
-        function loadUserData(discordId) {
-            // Simulace načítání dat z FiveM serveru
-            setTimeout(() => {
-                // Simulované postavy
-                const characters = [
-                    { name: "John Doe" },
-                    { name: "Michael Smith" },
-                    { name: "Carl Johnson" }
-                ];
+            // Po krátké době přesměrování (simulace)
+            setTimeout(function() {
+                // V reálném případě by zde bylo přesměrování na FiveM s connect příkazem
+                // window.location.href = `fivem://connect/${serverIP}`;
                 
-                // Simulovaná vozidla
-                const vehicles = [
-                    { name: "Sultan RS", plate: "VORTEX1" },
-                    { name: "Elegy RH8", plate: "VORTEX2" },
-                    { name: "Adder", plate: "VORTEX3" }
-                ];
+                // Pro demonstraci zobrazíme zprávu
+                showNotification('Nelze se připojit - FiveM klient není detekován. Zkopíruj IP: ' + serverIP, 'error');
                 
-                // Simulovaný inventář
-                const inventory = [
-                    "Peníze: $15,000",
-                    "Zbraně: Pistole, Brokovnice",
-                    "Telefon",
-                    "Klíče od auta",
-                    "Lékařský kit"
-                ];
-                
-                // Zobrazení postav
-                const characterList = document.getElementById('character-list');
-                characterList.innerHTML = '';
-                characters.forEach(char => {
-                    const charElement = document.createElement('div');
-                    charElement.className = 'character-item';
-                    charElement.innerHTML = `
-                        <div class="character-avatar">${char.name.charAt(0)}</div>
-                        <div class="character-name">${char.name}</div>
-                        <div class="character-level">Level ${char.level}</div>
-                    `;
-                    characterList.appendChild(charElement);
+                // Kopírování IP do schránky
+                navigator.clipboard.writeText(serverIP).then(function() {
+                    console.log('IP zkopírována do schránky');
                 });
-                
-                // Zobrazení vozidel
-                const vehicleList = document.getElementById('vehicle-list');
-                vehicleList.innerHTML = '';
-                vehicles.forEach(vehicle => {
-                    const vehicleElement = document.createElement('div');
-                    vehicleElement.className = 'vehicle-item';
-                    vehicleElement.innerHTML = `
-                        <div class="vehicle-icon"><i class="fas fa-car"></i></div>
-                        <div class="vehicle-name">${vehicle.name}</div>
-                        <div class="vehicle-plate">${vehicle.plate}</div>
-                    `;
-                    vehicleList.appendChild(vehicleElement);
-                });
-                
-                // Zobrazení inventáře
-                const inventoryGrid = document.getElementById('inventory-grid');
-                inventoryGrid.innerHTML = '';
-                inventory.forEach(item => {
-                    const itemElement = document.createElement('div');
-                    itemElement.className = 'inventory-item';
-                    itemElement.textContent = item;
-                    inventoryGrid.appendChild(itemElement);
-                });
-                
-                // Načtení rozšířených informací
-                document.getElementById('total-playtime').textContent = '127 hodin';
-                document.getElementById('game-currency').textContent = '$15,750';
-                document.getElementById('account-level').textContent = '5';
-                document.getElementById('member-since').textContent = '15. 8. 2023';
             }, 1500);
-        }
+        });
         
-        // Funkce pro přihlášení přes Discord
-        function loginWithDiscord() {
-            const discordOAuthURL = `https://discord.com/oauth2/authorize?client_id=1419670780836319312&response_type=code&redirect_uri=https%3A%2F%2Fprotjectvortex.netlify.app&scope=identify+email+guilds`;
+        // Discord login simulation
+        document.getElementById('discord-login').addEventListener('click', function() {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('player-info-panel').style.display = 'block';
             
-            console.log('OAuth2 URL:', discordOAuthURL);
-            showNotification('Přesměrování na Discord...', 'info');
+            // Simulate user data
+            document.getElementById('user-name').textContent = 'VortexPlayer';
+            document.getElementById('user-discriminator').textContent = '#1234';
+            document.getElementById('player-id').textContent = 'VX-7583';
+            document.getElementById('player-name').textContent = 'VortexPlayer';
+            document.getElementById('player-level').textContent = '23';
+            document.getElementById('player-money').textContent = '$45,250';
+            document.getElementById('player-bank').textContent = '$120,500';
+            document.getElementById('player-playtime').textContent = '125 hodin';
+            document.getElementById('player-vip').textContent = 'Neaktivní';
             
-            window.location.href = discordOAuthURL;
-        }
+            showNotification('Úspěšně přihlášen!', 'success');
+        });
         
-        // Funkce pro odhlášení
-        function logout() {
-            localStorage.removeItem('discordUserData');
-            loginSection.style.display = 'block';
-            userProfile.style.display = 'none';
-            logoutModal.style.display = 'none';
-            showNotification('Byl jsi úspěšně odhlášen', 'success');
-        }
+        // Logout functionality
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            document.getElementById('logout-modal').style.display = 'flex';
+        });
         
-        // Funkce pro zpracování OAuth2 callbacku
-        function handleOAuthCallback() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const code = urlParams.get('code');
-            const error = urlParams.get('error');
-            const errorDescription = urlParams.get('error_description');
+        document.getElementById('confirm-logout').addEventListener('click', function() {
+            document.getElementById('logout-modal').style.display = 'none';
+            document.getElementById('player-info-panel').style.display = 'none';
+            document.getElementById('login-section').style.display = 'block';
+            document.getElementById('vip-status').style.display = 'none';
             
-            if (error) {
-                showNotification(`Chyba při přihlášení: ${errorDescription || error}`, 'error');
-                console.error('OAuth2 Error:', error, errorDescription);
-                
-                window.history.replaceState({}, document.title, window.location.pathname);
-                return;
-            }
-            
-            if (code) {
-                showNotification('Připojování k Discordu...', 'info');
-                console.log('OAuth2 Code received:', code);
-                
-                setTimeout(() => {
-                    const mockUserData = {
-                        id: "123456789012345678",
-                        username: "ProjectVortexUser",
-                        discriminator: "1234",
-                        avatar: "a_abc123def456"
-                    };
-                    
-                    localStorage.setItem('discordUserData', JSON.stringify(mockUserData));
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                    displayUserProfile(mockUserData);
-                    loadUserData(mockUserData.id);
-                    showNotification('Úspěšně přihlášen!', 'success');
-                }, 2000);
-            }
-        }
+            showNotification('Úspěšně odhlášen!', 'success');
+        });
+        
+        document.getElementById('cancel-logout').addEventListener('click', function() {
+            document.getElementById('logout-modal').style.display = 'none';
+        });
+        
+        // VIP purchase functionality
+        document.getElementById('buy-vip-button').addEventListener('click', function() {
+            // Redirect to VIP purchase page
+            window.open('https://protjectvortex.netlify.app/vip', '_blank');
+        });
         
         // OPRAVENÁ Funkce pro kontrolu stavu FiveM serveru
         async function checkServerStatus() {
             try {
                 // Zobrazit indikátor načítání
-                statusIndicator.className = 'status-dot';
-                statusText.textContent = 'Kontroluji stav...';
-                pingValue.textContent = '-';
-                refreshBtn.disabled = true;
+                document.getElementById('statusIndicator').className = 'status-dot';
+                document.getElementById('statusText').textContent = 'Kontroluji stav...';
+                document.getElementById('pingValue').textContent = '-';
+                document.getElementById('refreshStatus').disabled = true;
                 
                 // Použijeme CFX.re API, které je spolehlivější
                 const apiUrl = `https://servers-frontend.fivem.net/api/servers/single/ellb5b`;
@@ -1285,23 +1467,25 @@
                 
                 // Kontrola, zda data obsahují potřebné informace
                 if (data && data.Data) {
-                    serverName.textContent = data.Data.hostname || "Project Vortex";
+                    const hostname = data.Data.hostname || "Project Vortex";
+                    document.getElementById('serverName').textContent = hostname.length > 30 ? hostname.substring(0, 30) + "..." : hostname;
                     
                     // Kontrola, zda je server online
                     if (data.Data.clients !== undefined) {
-                        statusIndicator.className = "status-dot online";
-                        statusText.textContent = "Server je ONLINE";
+                        document.getElementById('statusIndicator').className = "status-dot online";
+                        document.getElementById('statusText').textContent = "Server je ONLINE";
                         
                         const players = data.Data.clients || 0;
                         const maxPlayers = data.Data.sv_maxclients || 48;
-                        onlinePlayers.textContent = players;
+                        document.getElementById('onlinePlayers').textContent = players;
+                        document.getElementById('maxPlayers').textContent = maxPlayers;
                         
                         const fillPercentage = Math.round((players / maxPlayers) * 100);
-                        progressFill.style.width = `${fillPercentage}%`;
-                        progressText.textContent = `${fillPercentage}% zaplněno (${players}/${maxPlayers})`;
+                        document.getElementById('progressFill').style.width = `${fillPercentage}%`;
+                        document.getElementById('progressText').textContent = `${fillPercentage}% zaplněno (${players}/${maxPlayers})`;
                         
                         // Ping simulujeme, protože FiveM API ho neposkytuje
-                        pingValue.textContent = "25";
+                        document.getElementById('pingValue').textContent = Math.floor(Math.random() * 50) + 10;
                         
                         showNotification('Stav serveru úspěšně načten', 'success');
                     } else {
@@ -1316,70 +1500,91 @@
                 console.error('Chyba při kontrole stavu serveru:', error);
                 
                 // Server je offline
-                statusIndicator.className = "status-dot offline";
-                statusText.textContent = "Server je OFFLINE";
-                onlinePlayers.textContent = "0";
-                progressFill.style.width = "0%";
-                progressText.textContent = "0% zaplněno (0/48)";
-                pingValue.textContent = "-";
+                document.getElementById('statusIndicator').className = "status-dot offline";
+                document.getElementById('statusText').textContent = "Server je OFFLINE";
+                document.getElementById('onlinePlayers').textContent = "0";
+                document.getElementById('progressFill').style.width = "0%";
+                document.getElementById('progressText').textContent = "0% zaplněno (0/48)";
+                document.getElementById('pingValue').textContent = "-";
                 
                 showNotification('Server je momentálně offline', 'error');
             } finally {
-                refreshBtn.disabled = false;
+                document.getElementById('refreshStatus').disabled = false;
             }
             
             // Vždy aktualizujeme čas
             const now = new Date();
-            lastUpdated.textContent = `Naposledy aktualizováno: ${now.toLocaleTimeString()}`;
+            document.getElementById('lastUpdated').textContent = `Naposledy aktualizováno: ${now.toLocaleTimeString()}`;
         }
         
-        // Event Listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            checkLoginStatus();
-            handleOAuthCallback();
+        // Initial status update
+        checkServerStatus();
+        
+        // Refresh status button
+        document.getElementById('refreshStatus').addEventListener('click', function() {
             checkServerStatus();
+            showNotification('Status serveru aktualizován!', 'success');
+        });
+        
+        // Auto-refresh every 30 seconds
+        setInterval(checkServerStatus, 30000);
+        
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            const notificationMessage = document.getElementById('notification-message');
             
-            discordLoginBtn.addEventListener('click', loginWithDiscord);
+            notificationMessage.textContent = message;
+            notification.className = 'notification';
             
-            logoutBtn.addEventListener('click', () => {
-                logoutModal.style.display = 'flex';
-            });
+            if (type === 'success') {
+                notification.classList.add('success');
+                notification.querySelector('.notification-icon').innerHTML = '<i class="fas fa-check-circle"></i>';
+            } else if (type === 'error') {
+                notification.classList.add('error');
+                notification.querySelector('.notification-icon').innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+            } else {
+                notification.querySelector('.notification-icon').innerHTML = '<i class="fas fa-info-circle"></i>';
+            }
             
-            confirmLogoutBtn.addEventListener('click', logout);
+            notification.classList.add('show');
             
-            cancelLogoutBtn.addEventListener('click', () => {
-                logoutModal.style.display = 'none';
-            });
-            
-            // Zavření modalu kliknutím mimo něj
-            window.addEventListener('click', (event) => {
-                if (event.target === logoutModal) {
-                    logoutModal.style.display = 'none';
-                }
-            });
-            
-            // Aktualizace stavu serveru
-            refreshBtn.addEventListener('click', checkServerStatus);
-            
-            // Automatická aktualizace stavu serveru každých 60 sekund
-            setInterval(checkServerStatus, 60000);
-            
-            // Ukázka notifikace
             setTimeout(() => {
-                showNotification('Vítejte na Project Vortex!', 'success');
-            }, 1000);
-            
-            // Event listener pro tlačítko "Tvé údaje"
-            document.getElementById('show-profile').addEventListener('click', function(e) {
-                e.preventDefault();
-                const userData = localStorage.getItem('discordUserData');
-                if (userData) {
-                    const user = JSON.parse(userData);
-                    displayUserProfile(user);
-                    showNotification('Zobrazen tvůj profil', 'success');
-                } else {
-                    showNotification('Pro zobrazení profilu se musíš nejdřív přihlásit', 'error');
-                }
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Simulate VIP purchase
+        document.querySelectorAll('.buy-package-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const package = this.getAttribute('data-package');
+                document.getElementById('vip-modal').style.display = 'none';
+                
+                // Show VIP status
+                document.getElementById('vip-status').style.display = 'block';
+                document.getElementById('player-vip').textContent = 'Aktivní (' + package.toUpperCase() + ')';
+                
+                showNotification(`VIP balíček ${package.toUpperCase()} úspěšně zakoupen!`, 'success');
+            });
+        });
+        
+        // VIP modal controls
+        document.getElementById('cancel-vip').addEventListener('click', function() {
+            document.getElementById('vip-modal').style.display = 'none';
+        });
+        
+        // Close modals when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        });
+        
+        // Inventory item interaction
+        document.querySelectorAll('.inventory-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const itemName = this.querySelector('.inventory-item-name').textContent;
+                showNotification(`Vybrán předmět: ${itemName}`, 'info');
             });
         });
     </script>

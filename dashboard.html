@@ -1,15 +1,16 @@
 <!DOCTYPE html>
+
 <html lang="cs">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashboard</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body {
             background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), 
-                        url('https://images.unsplash.com/photo-1519791883288-dc8bd696e667?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+                        url('GTA5 16_9.png-1920x1080.png') no-repeat center center fixed;
             background-size: cover;
             color:white;
             min-height:100vh;
@@ -89,47 +90,42 @@
     </style>
 </head>
 <body>
-    <div class="dashboard-container">
-        <div class="header">
-            <button class="back-btn" onclick="goBack()">
-                <i class="fas fa-arrow-left"></i> Zpět na hlavní stránku
+<div class="dashboard-container">
+<div class="header">
+<button class="back-btn" onclick="goBack()">
+<i class="fas fa-arrow-left"></i> Zpět
             </button>
-            <h1>TVŮJ DASHBOARD</h1>
-        </div>
-
-        <div class="user-profile">
-            <img src="https://cdn.discordapp.com/embed/avatars/0.png" class="user-avatar" id="user-avatar">
-            <div class="user-info">
-                <div class="user-name" id="user-name">Uživatel</div>
-            </div>
-            <button class="logout-btn" onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i> Odhlásit
+<h1>TVŮJ DASHBOARD</h1>
+</div>
+<div class="user-profile">
+<img class="user-avatar" id="user-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png"/>
+<div class="user-info">
+<div class="user-name" id="user-name">Uživatel</div>
+</div>
+<button class="logout-btn" onclick="logout()">
+<i class="fas fa-sign-out-alt"></i> Odhlásit
             </button>
-        </div>
-
-        <div class="info-box">
-            <div class="info-title">TVÉ POSTAVY</div>
-            <div class="character-list" id="character-list">
-                <div class="empty-message">Žádné postavy</div>
-            </div>
-        </div>
-
-        <div class="info-box">
-            <div class="info-title">VLASTNĚNÁ VOZIDLA</div>
-            <div class="vehicle-list" id="vehicle-list">
-                <div class="empty-message">Žádná vozidla</div>
-            </div>
-        </div>
-
-        <div class="info-box">
-            <div class="info-title">INVENTÁŘ</div>
-            <div class="inventory-grid" id="inventory-grid">
-                <div class="empty-message">Inventář je prázdný</div>
-            </div>
-        </div>
-    </div>
-
-    <script>
+</div>
+<div class="info-box">
+<div class="info-title">TVÉ POSTAVY</div>
+<div class="character-list" id="character-list">
+<div class="empty-message">Žádné postavy</div>
+</div>
+</div>
+<div class="info-box">
+<div class="info-title">VLASTNĚNÁ VOZIDLA</div>
+<div class="vehicle-list" id="vehicle-list">
+<div class="empty-message">Žádná vozidla</div>
+</div>
+</div>
+<div class="info-box">
+<div class="info-title">INVENTÁŘ</div>
+<div class="inventory-grid" id="inventory-grid">
+<div class="empty-message">Inventář je prázdný</div>
+</div>
+</div>
+</div>
+<script>
         function logout() {
             if (confirm('Opravdu se chcete odhlásit?')) {
                 window.location.href = 'login.html';
